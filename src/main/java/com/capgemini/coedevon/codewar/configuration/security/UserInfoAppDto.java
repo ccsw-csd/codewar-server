@@ -12,6 +12,8 @@ public class UserInfoAppDto extends UserInfoDto {
 
   private String role;
 
+  private String jwt;
+  
   private Long id;
 
   private Date expiration;
@@ -63,5 +65,15 @@ public class UserInfoAppDto extends UserInfoDto {
 
     this.id = id;
   }
+
+public String getJwt() {
+
+    return jwt;
+}
+
+public void setJwt(String jwt) {
+
+    this.jwt = jwt;
+}
 
 }

@@ -110,9 +110,8 @@ public class JsonWebTokenUtility {
 
       UserInfoAppDto userDetails = this.userCache.get(username);
 
-      if (userDetails == null || isExpired(userDetails.getExpiration())) {
-        LOG.info("Creamos y cacheamos el usuario: " + username);
-        userDetails = createNewUserDetails(username);
+      if (userDetails == null || isExpired(userDetails.getExpiration()) || jwtToken.equals(userDetails.getJwt()) == false) {
+        userDetails = createNewUserDetails(username, jwtToken);
         addCustomPropertiesJwtToUserDetails(claims, userDetails);
         if (userDetails.getId() != null)
           this.userCache.put(username, userDetails);
@@ -121,18 +120,18 @@ public class JsonWebTokenUtility {
       return userDetails;
 
     } catch (ExpiredJwtException ex) {
-      LOG.info("User token expired " + jwtToken);
       return null;
     }
 
   }
 
-  private UserInfoAppDto createNewUserDetails(String username) {
+  private UserInfoAppDto createNewUserDetails(String username, String jwtToken) {
 
     UserInfoAppDto userDetails = new UserInfoAppDto();
     userDetails.setUsername(username);
     userDetails.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME));
-
+    userDetails.setJwt(jwtToken);
+    
     UserEntity user = this.userService.getByUsername(username);
     if (user != null) {
       userDetails.setRole(user.getRole().getCode());
