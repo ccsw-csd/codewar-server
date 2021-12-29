@@ -4,60 +4,52 @@ import java.io.Serializable;
 
 public class ChallengeTestValueTo implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  private Long id;
+   private String value;
+   private String name;
+   private String type;
 
-  private ChallengeParameterTo parameter;
+   /**
+    * @return the value
+    */
+   public String getValue() {
+      return value;
+   }
 
-  private String value;
+   /**
+    * @param value the value to set
+    */
+   public void setValue(String value) {
+      this.value = value;
+   }
 
-  /**
-   * @return id
-   */
-  public Long getId() {
+   /**
+    * @return the name
+    */
+   public String getName() {
+      return name;
+   }
 
-    return this.id;
-  }
+   /**
+    * @param name the name to set
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
 
-  /**
-   * @param id new value of {@link #getid}.
-   */
-  public void setId(Long id) {
+   /**
+    * @return the type
+    */
+   public String getType() {
+      return type;
+   }
 
-    this.id = id;
-  }
-
-  /**
-   * @return parameter
-   */
-  public ChallengeParameterTo getParameter() {
-
-    return this.parameter;
-  }
-
-  /**
-   * @param parameter new value of {@link #getparameter}.
-   */
-  public void setParameter(ChallengeParameterTo parameter) {
-
-    this.parameter = parameter;
-  }
-
-  /**
-   * @return value
-   */
-  public String getValue() {
-
-    return this.value;
-  }
-
-  /**
-   * @param value new value of {@link #getvalue}.
-   */
-  public void setValue(String value) {
-
-    this.value = value;
-  }
+   /**
+    * @param type the type to set
+    */
+   public void setType(String type) {
+      this.type = type;
+   }
 
 }

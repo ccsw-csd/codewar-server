@@ -1,6 +1,7 @@
 package com.capgemini.ccsw.codewar.challenge;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,6 +30,7 @@ import com.capgemini.ccsw.codewar.challenge.repository.ChallengeTestValueReposit
 import com.capgemini.ccsw.codewar.challenge.repository.ParameterTypeRepository;
 import com.capgemini.ccsw.codewar.challenge.repository.TagRepository;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeParameterTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeTestTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeTestValueTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeTo;
@@ -41,290 +43,309 @@ import com.capgemini.ccsw.codewar.user.UserService;
 @Transactional
 public class ChallengeServiceImpl implements ChallengeService {
 
-  /** Logger instance. */
-  private static final Logger LOG = LoggerFactory.getLogger(ChallengeServiceImpl.class);
+   /** Logger instance. */
+   private static final Logger LOG = LoggerFactory.getLogger(ChallengeServiceImpl.class);
 
-  @Autowired
-  ChallengeRepository challengeRepository;
+   @Autowired
+   ChallengeRepository challengeRepository;
 
-  @Autowired
-  ChallengeParameterRepository challengeParameterRepository;
+   @Autowired
+   ChallengeParameterRepository challengeParameterRepository;
 
-  @Autowired
-  ChallengeTagRepository challengeTagRepository;
+   @Autowired
+   ChallengeTagRepository challengeTagRepository;
 
-  @Autowired
-  ChallengeTestRepository challengeTestRepository;
+   @Autowired
+   ChallengeTestRepository challengeTestRepository;
 
-  @Autowired
-  ChallengeTestValueRepository challengeTestValueRepository;
+   @Autowired
+   ChallengeTestValueRepository challengeTestValueRepository;
 
-  @Autowired
-  TagRepository tagRepository;
+   @Autowired
+   TagRepository tagRepository;
 
-  @Autowired
-  ParameterTypeRepository parameterTypeRepository;
+   @Autowired
+   ParameterTypeRepository parameterTypeRepository;
 
-  @Autowired
-  ChallengeStatusRepository challengeStatusRepository;
+   @Autowired
+   ChallengeStatusRepository challengeStatusRepository;
 
-  @Autowired
-  UserService userService;
+   @Autowired
+   UserService userService;
 
-  @Autowired
-  private BeanMapper beanMapper;
+   @Autowired
+   private BeanMapper beanMapper;
 
-  /**
+   /**
    * {@inheritDoc}
    */
-  @Override
-  public ChallengeTo get(long id) {
+   @Override
+   public ChallengeSaveTo get(long id) {
 
-    ChallengeEntity challengeEntity = this.challengeRepository.findById(id).orElse(null);
-    if (challengeEntity == null)
-      return new ChallengeTo();
+      ChallengeEntity challengeEntity = this.challengeRepository.findById(id).orElse(null);
+      if (challengeEntity == null)
+         return new ChallengeSaveTo();
 
-    ChallengeTo challenge = this.beanMapper.map(challengeEntity, ChallengeTo.class);
+      ChallengeSaveTo challenge = this.beanMapper.map(challengeEntity, ChallengeSaveTo.class);
 
-    challenge.setParameters(findParametersByChallengeId(id));
-    challenge.setTags(findTagsByChallengeId(id));
-    challenge.setTests(findTestsByChallengeId(id));
+      challenge.setOutParameter(findOutParameterByChallengeId(id));
+      challenge.setInParameter(findParametersByChallengeId(id));
+      challenge.setTags(findTagsByChallengeId(id));
+      challenge.setTest(findTestsByChallengeId(id));
 
-    return challenge;
-  }
+      return challenge;
+   }
 
-  /**
+   /**
    * {@inheritDoc}
    */
-  @Override
-  public ChallengeTo saveOrUpdateUser(ChallengeTo challengeTo) {
+   @Override
+   public ChallengeSaveTo saveOrUpdate(Long id, ChallengeSaveTo challengeTo) {
 
-    ChallengeEntity challenge = new ChallengeEntity();
+      ChallengeEntity challenge = new ChallengeEntity();
 
-    if (challengeTo.getId() != null) {
-      removeChallengeData(challengeTo.getId());
-      challenge = this.challengeRepository.findById(challengeTo.getId()).orElse(new ChallengeEntity());
-    }
-
-    BeanUtils.copyProperties(challengeTo, challenge, new String[] { "status", "user" });
-    challenge.setStatus(this.challengeStatusRepository.findById(challengeTo.getStatus().getId()).orElse(null));
-    challenge.setUser(this.userService.get(UserUtils.getUserDetails().getId()));
-
-    challenge = this.challengeRepository.save(challenge);
-
-    saveTags(challenge, challengeTo.getTags());
-    saveParameters(challenge, challengeTo.getParameters(), challengeTo.getTests());
-    saveTests(challenge, challengeTo.getTests());
-
-    return get(challenge.getId());
-  }
-
-  /**
-   * @param challenge
-   */
-  private void remapParameterId(List<ChallengeTestTo> tests, Long oldParameterId, Long newParameterId) {
-
-    if (oldParameterId == null)
-      return;
-
-    for (ChallengeTestTo test : tests) {
-      for (ChallengeTestValueTo testValue : test.getValues()) {
-
-        if (testValue.getParameter().getId().equals(oldParameterId)) {
-          testValue.getParameter().setId(newParameterId);
-        }
+      if (id != null) {
+         removeChallengeData(id);
+         challenge = this.challengeRepository.findById(id).orElse(new ChallengeEntity());
+      } //
+      else {
+         challenge.setStatus(challengeStatusRepository.findById(ChallengeStatusEntity.BORRADOR).get());
       }
-    }
-  }
 
-  /**
-   * @param challenge
-   * @param tests
-   */
-  private void saveTests(ChallengeEntity challenge, List<ChallengeTestTo> tests) {
+      BeanUtils.copyProperties(challengeTo, challenge);
+      challenge.setUser(this.userService.get(UserUtils.getUserDetails().getId()));
+      challenge.setCreationDate(new Date());
 
-    for (ChallengeTestTo challengeTestTo : tests) {
+      challenge = this.challengeRepository.save(challenge);
 
-      ChallengeTestEntity challengeTest = new ChallengeTestEntity();
-      BeanUtils.copyProperties(challengeTestTo, challengeTest, new String[] { "challenge", "id" });
-      challengeTest.setChallenge(challenge);
+      saveTags(challenge, challengeTo);
+      saveParametersAndTests(challenge, challengeTo);
 
-      challengeTest = this.challengeTestRepository.save(challengeTest);
+      return get(challenge.getId());
+   }
 
-      saveValueTests(challengeTest, challengeTestTo.getValues());
-    }
-
-  }
-
-  /**
-   * @param challengeTest
-   * @param values
-   */
-  private void saveValueTests(ChallengeTestEntity challengeTest, List<ChallengeTestValueTo> values) {
-
-    for (ChallengeTestValueTo testValueTo : values) {
-
-      ChallengeTestValueEntity testValue = new ChallengeTestValueEntity();
-      BeanUtils.copyProperties(testValueTo, testValue, new String[] { "test", "parameter", "id" });
-      testValue.setTest(challengeTest);
-
-      Long parameterId = testValueTo.getParameter().getId();
-      ChallengeParameterEntity parameter = this.challengeParameterRepository.findById(parameterId).orElse(null);
-      testValue.setParameter(parameter);
-
-      this.challengeTestValueRepository.save(testValue);
-    }
-
-  }
-
-  /**
+   /**
    * @param challenge
    * @param parameters
    */
-  private List<ChallengeParameterEntity> saveParameters(ChallengeEntity challenge,
-      List<ChallengeParameterTo> parameters, List<ChallengeTestTo> tests) {
+   private void saveParametersAndTests(ChallengeEntity challenge, ChallengeSaveTo challengeTo) {
 
-    List<ChallengeParameterEntity> parameterList = new ArrayList<>();
+      int order = 0;
+      List<ChallengeParameterEntity> parameterList = new ArrayList<>();
 
-    for (ChallengeParameterTo challengeParameterTo : parameters) {
+      ChallengeParameterEntity parameterEntity = saveParameterChallenge(challenge, challengeTo.getOutParameter(), order++);
+      parameterList.add(parameterEntity);
 
-      Long parameterTypeId = challengeParameterTo.getType().getId();
-      ParameterTypeEntity parameterType = this.parameterTypeRepository.findById(parameterTypeId).orElse(null);
+      for (ChallengeParameterTo parameterTo : challengeTo.getInParameter()) {
+         parameterEntity = saveParameterChallenge(challenge, parameterTo, order++);
+         parameterList.add(parameterEntity);
+      }
+
+      saveTests(challenge, challengeTo, parameterList);
+   }
+
+   private ChallengeParameterEntity saveParameterChallenge(ChallengeEntity challenge, ChallengeParameterTo parameterOut, Integer order) {
+      ParameterTypeEntity parameterType = this.parameterTypeRepository.getByCode(parameterOut.getType());
 
       ChallengeParameterEntity challengeParameter = new ChallengeParameterEntity();
-      BeanUtils.copyProperties(challengeParameterTo, challengeParameter, new String[] { "challenge", "type", "id" });
       challengeParameter.setChallenge(challenge);
       challengeParameter.setType(parameterType);
-
+      challengeParameter.setName(parameterOut.getName());
+      challengeParameter.setOrder(order);
+      challengeParameter.setInput(order.intValue() > 0);
       challengeParameter = this.challengeParameterRepository.save(challengeParameter);
-      parameterList.add(challengeParameter);
+      return challengeParameter;
+   }
 
-      Long oldParameterId = challengeParameterTo.getId();
-      Long newParameterId = challengeParameter.getId();
-      remapParameterId(tests, oldParameterId, newParameterId);
-    }
+   /**
+    * @param challenge
+    * @param tests
+    */
+   private void saveTests(ChallengeEntity challenge, ChallengeSaveTo challengeTo, List<ChallengeParameterEntity> parameters) {
 
-    return parameterList;
-  }
+      int order = 0;
 
-  /**
+      for (ChallengeTestTo challengeTestTo : challengeTo.getTest()) {
+
+         ChallengeTestEntity challengeTest = new ChallengeTestEntity();
+         challengeTest.setChallenge(challenge);
+         challengeTest.setName(challengeTestTo.getName());
+         challengeTest.setOrder(order++);
+         challengeTest.setMaxTime(challengeTestTo.getTimeout());
+         challengeTest.setPerformance(challengeTestTo.getTimeout() != null);
+         challengeTest.setVisible(challengeTestTo.getVisible());
+
+         challengeTest = this.challengeTestRepository.save(challengeTest);
+
+         saveValueTests(challengeTest, challengeTestTo, parameters);
+      }
+
+   }
+
+   /**
+   * @param challengeTest
+   * @param values
+   */
+   private void saveValueTests(ChallengeTestEntity challengeTest, ChallengeTestTo challengeTestTo, List<ChallengeParameterEntity> parameters) {
+
+      int order = 0;
+
+      ChallengeParameterEntity parameter = parameters.get(order++);
+      saveOneValueTest(challengeTest, parameter, challengeTestTo.getValueOut().getValue());
+
+      for (ChallengeTestValueTo testValueTo : challengeTestTo.getValueIn()) {
+         parameter = parameters.get(order++);
+         saveOneValueTest(challengeTest, parameter, testValueTo.getValue());
+      }
+
+   }
+
+   private void saveOneValueTest(ChallengeTestEntity challengeTest, ChallengeParameterEntity parameter, String value) {
+      ChallengeTestValueEntity testValue = new ChallengeTestValueEntity();
+
+      testValue.setTest(challengeTest);
+      testValue.setParameter(parameter);
+      testValue.setValue(value);
+
+      this.challengeTestValueRepository.save(testValue);
+   }
+
+   /**
    * @param challengeTo
    */
-  private void saveTags(ChallengeEntity challenge, List<TagTo> tags) {
+   private void saveTags(ChallengeEntity challenge, ChallengeSaveTo challengeTo) {
 
-    for (TagTo tagTo : tags) {
+      List<TagTo> tags = challengeTo.getTags();
 
-      TagEntity tag = this.tagRepository.findById(tagTo.getId()).orElse(null);
+      for (TagTo tagTo : tags) {
 
-      ChallengeTagEntity challengeTag = new ChallengeTagEntity();
-      challengeTag.setChallenge(challenge);
-      challengeTag.setTag(tag);
+         TagEntity tag = this.tagRepository.findById(tagTo.getId()).orElse(null);
 
-      this.challengeTagRepository.save(challengeTag);
-    }
+         if (tag != null) {
+            ChallengeTagEntity challengeTag = new ChallengeTagEntity();
+            challengeTag.setChallenge(challenge);
+            challengeTag.setTag(tag);
 
-  }
+            this.challengeTagRepository.save(challengeTag);
+         }
+      }
 
-  /**
+   }
+
+   /**
    * @param id
    */
-  private void removeChallengeData(Long id) {
+   private void removeChallengeData(Long id) {
 
-    // TODO Auto-generated method stub
+      // TODO Auto-generated method stub
 
-  }
+   }
 
-  /**
+   /**
    * {@inheritDoc}
    */
-  @Override
-  public List<TagEntity> findAllTags() {
+   @Override
+   public List<TagEntity> findAllTags() {
 
-    return StreamSupport.stream(this.tagRepository.findAll().spliterator(), false).collect(Collectors.toList());
-  }
+      return StreamSupport.stream(this.tagRepository.findAll().spliterator(), false).collect(Collectors.toList());
+   }
 
-  /**
+   /**
    * {@inheritDoc}
    */
-  @Override
-  public List<ParameterTypeEntity> findAllParameterType() {
+   @Override
+   public List<ParameterTypeEntity> findAllParameterType() {
 
-    return StreamSupport.stream(this.parameterTypeRepository.findAll().spliterator(), false)
-        .collect(Collectors.toList());
-  }
+      return StreamSupport.stream(this.parameterTypeRepository.findAll().spliterator(), false).collect(Collectors.toList());
+   }
 
-  /**
+   /**
    * {@inheritDoc}
    */
-  @Override
-  public List<ChallengeStatusEntity> findAllChallengeStatus() {
+   @Override
+   public List<ChallengeStatusEntity> findAllChallengeStatus() {
 
-    return StreamSupport.stream(this.challengeStatusRepository.findAll().spliterator(), false)
-        .collect(Collectors.toList());
-  }
+      return StreamSupport.stream(this.challengeStatusRepository.findAll().spliterator(), false).collect(Collectors.toList());
+   }
 
-  /**
+   /**
    * @param id
    * @return
    */
-  private List<ChallengeTestTo> findTestsByChallengeId(long id) {
+   private List<ChallengeTestTo> findTestsByChallengeId(long id) {
 
-    List<ChallengeTestEntity> list = this.challengeTestRepository.findByChallenge_IdOrderByOrder(id);
-    List<ChallengeTestTo> tests = new ArrayList<>();
+      List<ChallengeTestEntity> list = this.challengeTestRepository.findByChallenge_IdOrderByOrder(id);
+      List<ChallengeTestTo> tests = new ArrayList<>();
 
-    for (ChallengeTestEntity testEntity : list) {
+      for (ChallengeTestEntity testEntity : list) {
 
-      ChallengeTestTo test = this.beanMapper.map(testEntity, ChallengeTestTo.class);
-      test.setValues(findTestValuesByTestId(test.getId()));
-      tests.add(test);
-    }
+         ChallengeTestTo test = this.beanMapper.map(testEntity, ChallengeTestTo.class);
+         //test.setValues(findTestValuesByTestId(testEntity.getId()));
+         tests.add(test);
+      }
 
-    return tests;
-  }
+      return tests;
+   }
 
-  /**
+   /**
    * @param id
    * @return
    */
-  private List<ChallengeTestValueTo> findTestValuesByTestId(long id) {
+   private List<TagTo> findTagsByChallengeId(long id) {
 
-    List<ChallengeTestValueEntity> list = this.challengeTestValueRepository.findByTest_idOrderByParameter_Order(id);
+      List<ChallengeTagEntity> list = this.challengeTagRepository.findByChallenge_Id(id);
+      List<TagTo> tags = new ArrayList<>();
 
-    return this.beanMapper.mapList(list, ChallengeTestValueTo.class);
-  }
+      for (ChallengeTagEntity entity : list) {
+         tags.add(this.beanMapper.map(entity.getTag(), TagTo.class));
+      }
 
-  /**
+      return tags;
+   }
+
+   /**
    * @param id
    * @return
    */
-  private List<TagTo> findTagsByChallengeId(long id) {
+   private ChallengeParameterTo findOutParameterByChallengeId(long id) {
 
-    List<ChallengeTagEntity> list = this.challengeTagRepository.findByChallenge_Id(id);
-    List<TagTo> tags = new ArrayList<>();
+      List<ChallengeParameterEntity> list = this.challengeParameterRepository.findByChallenge_IdOrderByOrder(id);
 
-    for (ChallengeTagEntity entity : list) {
-      tags.add(this.beanMapper.map(entity.getTag(), TagTo.class));
-    }
+      if (list == null || list.size() == 0)
+         return null;
 
-    return tags;
-  }
+      ChallengeParameterEntity parameter = list.get(0);
+      return new ChallengeParameterTo(parameter.getType() != null ? parameter.getType().getCode() : null, parameter.getName());
 
-  /**
+   }
+
+   /**
    * @param id
    * @return
    */
-  private List<ChallengeParameterTo> findParametersByChallengeId(long id) {
+   private List<ChallengeParameterTo> findParametersByChallengeId(long id) {
 
-    List<ChallengeParameterEntity> list = this.challengeParameterRepository.findByChallenge_IdOrderByOrder(id);
-    return this.beanMapper.mapList(list, ChallengeParameterTo.class);
-  }
+      List<ChallengeParameterEntity> list = this.challengeParameterRepository.findByChallenge_IdOrderByOrder(id);
 
-  @Override
-  public List<ChallengeTo> find() {
+      if (list == null || list.size() == 0)
+         return null;
 
-    Long id = UserUtils.getUserDetails().getId();
-    return this.challengeRepository.findChallengesWithParticipationNum(id);
+      list.remove(0);
 
-  }
+      List<ChallengeParameterTo> listTo = new ArrayList<>();
+      for (ChallengeParameterEntity parameter : list) {
+         listTo.add(new ChallengeParameterTo(parameter.getType() != null ? parameter.getType().getCode() : null, parameter.getName()));
+      }
+
+      return listTo;
+   }
+
+   @Override
+   public List<ChallengeTo> find() {
+
+      Long id = UserUtils.getUserDetails().getId();
+      return this.challengeRepository.findChallengesWithParticipationNum(id);
+
+   }
 
 }

@@ -2,6 +2,8 @@ package com.capgemini.ccsw.codewar.challenge.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,85 +13,86 @@ import javax.persistence.Table;
 @Table(schema = "codewar", name = "challenge_test_value")
 public class ChallengeTestValueEntity {
 
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "id")
-  private Long id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "id")
+   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "challenge_test_id")
-  private ChallengeTestEntity test;
+   @ManyToOne
+   @JoinColumn(name = "challenge_test_id")
+   private ChallengeTestEntity test;
 
-  @ManyToOne
-  @JoinColumn(name = "challenge_parameter_id")
-  private ChallengeParameterEntity parameter;
+   @ManyToOne
+   @JoinColumn(name = "challenge_parameter_id")
+   private ChallengeParameterEntity parameter;
 
-  @Column(name = "value")
-  private String value;
+   @Column(name = "value")
+   private String value;
 
-  /**
+   /**
    * @return id
    */
-  public Long getId() {
+   public Long getId() {
 
-    return this.id;
-  }
+      return this.id;
+   }
 
-  /**
+   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(Long id) {
+   public void setId(Long id) {
 
-    this.id = id;
-  }
+      this.id = id;
+   }
 
-  /**
+   /**
    * @return test
    */
-  public ChallengeTestEntity getTest() {
+   public ChallengeTestEntity getTest() {
 
-    return this.test;
-  }
+      return this.test;
+   }
 
-  /**
+   /**
    * @param test new value of {@link #gettest}.
    */
-  public void setTest(ChallengeTestEntity test) {
+   public void setTest(ChallengeTestEntity test) {
 
-    this.test = test;
-  }
+      this.test = test;
+   }
 
-  /**
+   /**
    * @return parameter
    */
-  public ChallengeParameterEntity getParameter() {
+   public ChallengeParameterEntity getParameter() {
 
-    return this.parameter;
-  }
+      return this.parameter;
+   }
 
-  /**
+   /**
    * @param parameter new value of {@link #getparameter}.
    */
-  public void setParameter(ChallengeParameterEntity parameter) {
+   public void setParameter(ChallengeParameterEntity parameter) {
 
-    this.parameter = parameter;
-  }
+      this.parameter = parameter;
+   }
 
-  /**
+   /**
    * @return value
    */
-  public String getValue() {
+   public String getValue() {
 
-    return this.value;
-  }
+      return this.value;
+   }
 
-  /**
+   /**
    * @param value new value of {@link #getvalue}.
    */
-  public void setValue(String value) {
+   public void setValue(String value) {
 
-    this.value = value;
-  }
+      this.value = value;
+   }
 
 }

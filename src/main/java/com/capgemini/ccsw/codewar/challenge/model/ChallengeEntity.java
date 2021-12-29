@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,237 +17,238 @@ import com.capgemini.ccsw.codewar.user.model.UserEntity;
 @Table(schema = "codewar", name = "challenge")
 public class ChallengeEntity {
 
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "id")
-  private Long id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "id")
+   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private UserEntity user;
+   @ManyToOne
+   @JoinColumn(name = "user_id")
+   private UserEntity user;
 
-  @ManyToOne
-  @JoinColumn(name = "status_id")
-  private ChallengeStatusEntity status;
+   @ManyToOne
+   @JoinColumn(name = "status_id")
+   private ChallengeStatusEntity status;
 
-  @Column(name = "creation_date")
-  private Date creationDate;
+   @Column(name = "creation_date")
+   private Date creationDate;
 
-  @Column(name = "name")
-  private String name;
+   @Column(name = "name")
+   private String name;
 
-  @Column(name = "description")
-  private String description;
+   @Column(name = "description")
+   private String description;
 
-  @Column(name = "base_code")
-  private String baseCode;
+   @Column(name = "base_code")
+   private String baseCode;
 
-  @Column(name = "function_name")
-  private String functionName;
+   @Column(name = "function_name")
+   private String functionName;
 
-  @Column(name = "class_name")
-  private String className;
+   @Column(name = "class_name")
+   private String className;
 
-  @Column(name = "start_date")
-  private Date startDate;
+   @Column(name = "start_date")
+   private Date startDate;
 
-  @Column(name = "end_date")
-  private Date endDate;
+   @Column(name = "end_date")
+   private Date endDate;
 
-  @Column(name = "tries")
-  private Boolean multipleTries;
+   @Column(name = "tries")
+   private Boolean multipleTries;
 
-  /**
+   /**
    * @return id
    */
-  public Long getId() {
+   public Long getId() {
 
-    return this.id;
-  }
+      return this.id;
+   }
 
-  /**
+   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(Long id) {
+   public void setId(Long id) {
 
-    this.id = id;
-  }
+      this.id = id;
+   }
 
-  /**
+   /**
    * @return user
    */
-  public UserEntity getUser() {
+   public UserEntity getUser() {
 
-    return this.user;
-  }
+      return this.user;
+   }
 
-  /**
+   /**
    * @param user new value of {@link #getuser}.
    */
-  public void setUser(UserEntity user) {
+   public void setUser(UserEntity user) {
 
-    this.user = user;
-  }
+      this.user = user;
+   }
 
-  /**
+   /**
    * @return status
    */
-  public ChallengeStatusEntity getStatus() {
+   public ChallengeStatusEntity getStatus() {
 
-    return this.status;
-  }
+      return this.status;
+   }
 
-  /**
+   /**
    * @param status new value of {@link #getstatus}.
    */
-  public void setStatus(ChallengeStatusEntity status) {
+   public void setStatus(ChallengeStatusEntity status) {
 
-    this.status = status;
-  }
+      this.status = status;
+   }
 
-  /**
+   /**
    * @return creationDate
    */
-  public Date getCreationDate() {
+   public Date getCreationDate() {
 
-    return this.creationDate;
-  }
+      return this.creationDate;
+   }
 
-  /**
+   /**
    * @param creationDate new value of {@link #getcreationDate}.
    */
-  public void setCreationDate(Date creationDate) {
+   public void setCreationDate(Date creationDate) {
 
-    this.creationDate = creationDate;
-  }
+      this.creationDate = creationDate;
+   }
 
-  /**
+   /**
    * @return name
    */
-  public String getName() {
+   public String getName() {
 
-    return this.name;
-  }
+      return this.name;
+   }
 
-  /**
+   /**
    * @param name new value of {@link #getname}.
    */
-  public void setName(String name) {
+   public void setName(String name) {
 
-    this.name = name;
-  }
+      this.name = name;
+   }
 
-  /**
+   /**
    * @return description
    */
-  public String getDescription() {
+   public String getDescription() {
 
-    return this.description;
-  }
+      return this.description;
+   }
 
-  /**
+   /**
    * @param description new value of {@link #getdescription}.
    */
-  public void setDescription(String description) {
+   public void setDescription(String description) {
 
-    this.description = description;
-  }
+      this.description = description;
+   }
 
-  /**
+   /**
    * @return baseCode
    */
-  public String getBaseCode() {
+   public String getBaseCode() {
 
-    return this.baseCode;
-  }
+      return this.baseCode;
+   }
 
-  /**
+   /**
    * @param baseCode new value of {@link #getbaseCode}.
    */
-  public void setBaseCode(String baseCode) {
+   public void setBaseCode(String baseCode) {
 
-    this.baseCode = baseCode;
-  }
+      this.baseCode = baseCode;
+   }
 
-  /**
+   /**
    * @return functionName
    */
-  public String getFunctionName() {
+   public String getFunctionName() {
 
-    return this.functionName;
-  }
+      return this.functionName;
+   }
 
-  /**
+   /**
    * @param functionName new value of {@link #getfunctionName}.
    */
-  public void setFunctionName(String functionName) {
+   public void setFunctionName(String functionName) {
 
-    this.functionName = functionName;
-  }
+      this.functionName = functionName;
+   }
 
-  /**
+   /**
    * @return className
    */
-  public String getClassName() {
+   public String getClassName() {
 
-    return this.className;
-  }
+      return this.className;
+   }
 
-  /**
+   /**
    * @param className new value of {@link #getclassName}.
    */
-  public void setClassName(String className) {
+   public void setClassName(String className) {
 
-    this.className = className;
-  }
+      this.className = className;
+   }
 
-  /**
+   /**
    * @return startDate
    */
-  public Date getStartDate() {
+   public Date getStartDate() {
 
-    return this.startDate;
-  }
+      return this.startDate;
+   }
 
-  /**
+   /**
    * @param startDate new value of {@link #getstartDate}.
    */
-  public void setStartDate(Date startDate) {
+   public void setStartDate(Date startDate) {
 
-    this.startDate = startDate;
-  }
+      this.startDate = startDate;
+   }
 
-  /**
+   /**
    * @return endDate
    */
-  public Date getEndDate() {
+   public Date getEndDate() {
 
-    return this.endDate;
-  }
+      return this.endDate;
+   }
 
-  /**
+   /**
    * @param endDate new value of {@link #getendDate}.
    */
-  public void setEndDate(Date endDate) {
+   public void setEndDate(Date endDate) {
 
-    this.endDate = endDate;
-  }
+      this.endDate = endDate;
+   }
 
-  /**
+   /**
    * @return multipleTries
    */
-  public Boolean getMultipleTries() {
+   public Boolean getMultipleTries() {
 
-    return this.multipleTries;
-  }
+      return this.multipleTries;
+   }
 
-  /**
+   /**
    * @param multipleTries new value of {@link #getmultipleTries}.
    */
-  public void setMultipleTries(Boolean multipleTries) {
+   public void setMultipleTries(Boolean multipleTries) {
 
-    this.multipleTries = multipleTries;
-  }
+      this.multipleTries = multipleTries;
+   }
 
 }

@@ -9,64 +9,68 @@ import javax.persistence.Table;
 @Table(schema = "codewar", name = "challenge_status")
 public class ChallengeStatusEntity {
 
-  private static final long serialVersionUID = 1L;
+   public static final long BORRADOR = 1;
+   public static final long ACTIVADO = 2;
+   public static final long CERRADO = 3;
 
-  @Id
-  @Column(name = "id")
-  private Long id;
+   private static final long serialVersionUID = 1L;
 
-  @Column(name = "code")
-  private String code;
+   @Id
+   @Column(name = "id")
+   private Long id;
 
-  @Column(name = "name")
-  private String name;
+   @Column(name = "code")
+   private String code;
 
-  /**
+   @Column(name = "name")
+   private String name;
+
+   /**
    * @return id
    */
-  public Long getId() {
+   public Long getId() {
 
-    return this.id;
-  }
+      return this.id;
+   }
 
-  /**
+   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(Long id) {
+   public void setId(Long id) {
 
-    this.id = id;
-  }
+      this.id = id;
+   }
 
-  /**
+   /**
    * @return code
    */
-  public String getCode() {
+   public String getCode() {
 
-    return this.code;
-  }
+      return this.code;
+   }
 
-  /**
+   /**
    * @param code new value of {@link #getcode}.
    */
-  public void setCode(String code) {
+   public void setCode(String code) {
 
-    this.code = code;
-  }
+      this.code = code;
+   }
 
-  /**
+   /**
    * @return name
    */
-  public String getName() {
+   public String getName() {
 
-    return this.name;
-  }
+      return this.name;
+   }
 
-  /**
+   /**
    * @param name new value of {@link #getname}.
    */
-  public void setName(String name) {
+   public void setName(String name) {
 
-    this.name = name;
-  }
+      this.name = name;
+   }
 
 }

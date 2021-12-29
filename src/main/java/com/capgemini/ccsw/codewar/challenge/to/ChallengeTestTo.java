@@ -5,132 +5,86 @@ import java.util.List;
 
 public class ChallengeTestTo implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  private Long id;
+   private String name;
 
-  private String name;
+   private Integer timeout;
 
-  private Integer order;
+   private Boolean visible;
 
-  private Integer maxTime;
+   private ChallengeTestValueTo valueOut;
 
-  private Boolean visible;
+   private List<ChallengeTestValueTo> valueIn;
 
-  private Boolean performance;
+   /**
+    * @return the name
+    */
+   public String getName() {
+      return name;
+   }
 
-  private List<ChallengeTestValueTo> values;
+   /**
+    * @param name the name to set
+    */
+   public void setName(String name) {
+      this.name = name;
+   }
 
-  /**
-   * @return id
-   */
-  public Long getId() {
+   /**
+    * @return the timeout
+    */
+   public Integer getTimeout() {
+      return timeout;
+   }
 
-    return this.id;
-  }
+   /**
+    * @param timeout the timeout to set
+    */
+   public void setTimeout(Integer timeout) {
+      this.timeout = timeout;
+   }
 
-  /**
-   * @param id new value of {@link #getid}.
-   */
-  public void setId(Long id) {
+   /**
+    * @return the visible
+    */
+   public Boolean getVisible() {
+      return visible;
+   }
 
-    this.id = id;
-  }
+   /**
+    * @param visible the visible to set
+    */
+   public void setVisible(Boolean visible) {
+      this.visible = visible;
+   }
 
-  /**
-   * @return name
-   */
-  public String getName() {
+   /**
+    * @return the valueOut
+    */
+   public ChallengeTestValueTo getValueOut() {
+      return valueOut;
+   }
 
-    return this.name;
-  }
+   /**
+    * @param valueOut the valueOut to set
+    */
+   public void setValueOut(ChallengeTestValueTo valueOut) {
+      this.valueOut = valueOut;
+   }
 
-  /**
-   * @param name new value of {@link #getname}.
-   */
-  public void setName(String name) {
+   /**
+    * @return the valueIn
+    */
+   public List<ChallengeTestValueTo> getValueIn() {
+      return valueIn;
+   }
 
-    this.name = name;
-  }
-
-  /**
-   * @return order
-   */
-  public Integer getOrder() {
-
-    return this.order;
-  }
-
-  /**
-   * @param order new value of {@link #getorder}.
-   */
-  public void setOrder(Integer order) {
-
-    this.order = order;
-  }
-
-  /**
-   * @return maxTime
-   */
-  public Integer getMaxTime() {
-
-    return this.maxTime;
-  }
-
-  /**
-   * @param maxTime new value of {@link #getmaxTime}.
-   */
-  public void setMaxTime(Integer maxTime) {
-
-    this.maxTime = maxTime;
-  }
-
-  /**
-   * @return visible
-   */
-  public Boolean getVisible() {
-
-    return this.visible;
-  }
-
-  /**
-   * @param visible new value of {@link #getvisible}.
-   */
-  public void setVisible(Boolean visible) {
-
-    this.visible = visible;
-  }
-
-  /**
-   * @return performance
-   */
-  public Boolean getPerformance() {
-
-    return this.performance;
-  }
-
-  /**
-   * @param performance new value of {@link #getperformance}.
-   */
-  public void setPerformance(Boolean performance) {
-
-    this.performance = performance;
-  }
-
-  /**
-   * @return values
-   */
-  public List<ChallengeTestValueTo> getValues() {
-
-    return values;
-  }
-
-  /**
-   * @param values new value of {@link #getvalues}.
-   */
-  public void setValues(List<ChallengeTestValueTo> values) {
-
-    this.values = values;
-  }
+   /**
+    * @param valueIn the valueIn to set
+    */
+   public void setValueIn(List<ChallengeTestValueTo> valueIn) {
+      this.valueIn = valueIn;
+   }
 
 }
