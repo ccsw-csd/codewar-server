@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.codewar.challenge.to;
+package com.capgemini.ccsw.codewar.master.to;
 
 import java.io.Serializable;
 

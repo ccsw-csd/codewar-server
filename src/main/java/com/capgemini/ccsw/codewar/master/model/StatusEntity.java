@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.codewar.challenge.model;
+package com.capgemini.ccsw.codewar.master.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,11 +7,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(schema = "codewar", name = "challenge_status")
-public class ChallengeStatusEntity {
+public class StatusEntity {
 
-   public static final long BORRADOR = 1;
-   public static final long ACTIVADO = 2;
-   public static final long CERRADO = 3;
+   public static final String BORRADOR = "PND";
+   public static final String ACTIVADO = "ACT";
+   public static final String CERRADO = "CLO";
 
    private static final long serialVersionUID = 1L;
 

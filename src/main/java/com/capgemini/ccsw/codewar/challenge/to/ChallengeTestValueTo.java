@@ -10,6 +10,16 @@ public class ChallengeTestValueTo implements Serializable {
    private String name;
    private String type;
 
+   public ChallengeTestValueTo() {
+   }
+
+   public ChallengeTestValueTo(String value, String name, String type) {
+      super();
+      this.value = value;
+      this.name = name;
+      this.type = type;
+   }
+
    /**
     * @return the value
     */

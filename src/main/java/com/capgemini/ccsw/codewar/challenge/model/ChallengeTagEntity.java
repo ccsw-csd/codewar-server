@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.capgemini.ccsw.codewar.master.model.TagEntity;
+
 @Entity
 @Table(schema = "codewar", name = "challenge_tag")
 public class ChallengeTagEntity {

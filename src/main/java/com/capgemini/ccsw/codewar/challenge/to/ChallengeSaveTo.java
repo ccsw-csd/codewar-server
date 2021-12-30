@@ -3,6 +3,8 @@ package com.capgemini.ccsw.codewar.challenge.to;
 import java.io.Serializable;
 import java.util.List;
 
+import com.capgemini.ccsw.codewar.master.to.TagTo;
+
 public class ChallengeSaveTo implements Serializable {
 
    private static final long serialVersionUID = 1L;

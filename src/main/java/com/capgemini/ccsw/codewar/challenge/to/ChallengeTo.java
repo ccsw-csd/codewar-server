@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.capgemini.ccsw.codewar.master.to.StatusTo;
+import com.capgemini.ccsw.codewar.master.to.TagTo;
 import com.capgemini.ccsw.codewar.user.model.UserDto;
 
 public class ChallengeTo implements Serializable {
@@ -14,7 +16,7 @@ public class ChallengeTo implements Serializable {
 
   private UserDto user;
 
-  private ChallengeStatusTo status;
+  private StatusTo status;
 
   private Date creationDate;
 
@@ -77,7 +79,7 @@ public class ChallengeTo implements Serializable {
   /**
    * @return status
    */
-  public ChallengeStatusTo getStatus() {
+  public StatusTo getStatus() {
 
     return this.status;
   }
@@ -85,7 +87,7 @@ public class ChallengeTo implements Serializable {
   /**
    * @param status new value of {@link #getstatus}.
    */
-  public void setStatus(ChallengeStatusTo status) {
+  public void setStatus(StatusTo status) {
 
     this.status = status;
   }
@@ -325,7 +327,7 @@ public class ChallengeTo implements Serializable {
     this.user = new UserDto();
     this.user.setId(userId);
 
-    this.status = new ChallengeStatusTo();
+    this.status = new StatusTo();
     this.status.setId(statusId);
     this.status.setName(statusName);
     this.status.setCode(statusCode);

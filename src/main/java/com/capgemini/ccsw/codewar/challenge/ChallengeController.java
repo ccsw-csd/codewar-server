@@ -2,8 +2,6 @@ package com.capgemini.ccsw.codewar.challenge;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.ccsw.codewar.challenge.model.ChallengeStatusEntity;
-import com.capgemini.ccsw.codewar.challenge.model.ParameterTypeEntity;
+import com.capgemini.ccsw.codewar.challenge.service.Challenge;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeActivateResponseTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeItemListTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
-import com.capgemini.ccsw.codewar.challenge.to.ChallengeTo;
-import com.capgemini.ccsw.codewar.challenge.to.TagTo;
-import com.capgemini.ccsw.codewar.configuration.mapper.BeanMapper;
 import com.capgemini.ccsw.codewar.user.UserService;
 
 /**
@@ -30,27 +26,22 @@ import com.capgemini.ccsw.codewar.user.UserService;
 public class ChallengeController {
 
    @Autowired
-   private ChallengeService challengeService;
-
-   @Autowired
-   private BeanMapper beanMapper;
-
-   @RequestMapping(path = "/", method = RequestMethod.GET)
-   public List<ChallengeTo> find() {
-
-      return this.challengeService.find();
-
-   }
+   private Challenge challengeService;
 
    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
    public ChallengeSaveTo get(@PathVariable("id") long id) {
 
       return this.challengeService.get(id);
+   }
 
+   @RequestMapping(path = "/", method = RequestMethod.GET)
+   public List<ChallengeItemListTo> find() {
+
+      return this.challengeService.find();
    }
 
    @RequestMapping(path = "/{id}/", method = RequestMethod.POST)
-   public ChallengeSaveTo saveOrUpdate(@PathParam("id") Long id, @RequestBody ChallengeSaveTo challenge) {
+   public ChallengeSaveTo saveOrUpdate(@PathVariable("id") Long id, @RequestBody ChallengeSaveTo challenge) {
 
       return this.challengeService.saveOrUpdate(id, challenge);
    }
@@ -61,25 +52,22 @@ public class ChallengeController {
       return this.saveOrUpdate(null, challenge);
    }
 
-   @RequestMapping(path = "/tags", method = RequestMethod.GET)
-   List<TagTo> findAllTags() {
+   @RequestMapping(path = "/{id}/", method = RequestMethod.DELETE)
+   public void delete(@PathVariable("id") Long id) {
 
-      return this.beanMapper.mapList(this.challengeService.findAllTags(), TagTo.class);
-
+      this.challengeService.delete(id);
    }
 
-   @RequestMapping(path = "/parameter-types", method = RequestMethod.GET)
-   List<ParameterTypeEntity> findAllParameterType() {
+   @RequestMapping(path = "/{id}/check", method = RequestMethod.GET)
+   public ChallengeActivateResponseTo check(@PathVariable("id") Long id) {
 
-      return this.beanMapper.mapList(this.challengeService.findAllParameterType(), ParameterTypeEntity.class);
-
+      return this.challengeService.check(id);
    }
 
-   @RequestMapping(path = "/status", method = RequestMethod.GET)
-   List<ChallengeStatusEntity> findAllChallengeStatus() {
+   @RequestMapping(path = "/{id}/activate", method = RequestMethod.GET)
+   public ChallengeActivateResponseTo checkAndActivate(@PathVariable("id") Long id) {
 
-      return this.beanMapper.mapList(this.challengeService.findAllChallengeStatus(), ChallengeStatusEntity.class);
-
+      return this.challengeService.checkAndActivate(id);
    }
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.capgemini.ccsw.codewar.master.model.StatusEntity;
 import com.capgemini.ccsw.codewar.user.model.UserEntity;
 
 @Entity
@@ -30,7 +31,7 @@ public class ChallengeEntity {
 
    @ManyToOne
    @JoinColumn(name = "status_id")
-   private ChallengeStatusEntity status;
+   private StatusEntity status;
 
    @Column(name = "creation_date")
    private Date creationDate;
@@ -94,7 +95,7 @@ public class ChallengeEntity {
    /**
    * @return status
    */
-   public ChallengeStatusEntity getStatus() {
+   public StatusEntity getStatus() {
 
       return this.status;
    }
@@ -102,7 +103,7 @@ public class ChallengeEntity {
    /**
    * @param status new value of {@link #getstatus}.
    */
-   public void setStatus(ChallengeStatusEntity status) {
+   public void setStatus(StatusEntity status) {
 
       this.status = status;
    }

@@ -1,24 +1,15 @@
-package com.capgemini.ccsw.codewar.challenge.model;
+package com.capgemini.ccsw.codewar.master.to;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Entity
-@Table(schema = "codewar", name = "tag")
-public class TagEntity {
+public class StatusTo implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "id")
   private Long id;
 
-  @Column(name = "code")
   private String code;
 
-  @Column(name = "name")
   private String name;
 
   /**
