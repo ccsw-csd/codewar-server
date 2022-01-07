@@ -1,6 +1,7 @@
 package com.capgemini.ccsw.codewar.user.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class UserDto implements Serializable {
   /**
@@ -21,6 +22,8 @@ public class UserDto implements Serializable {
   private String lastName;
 
   private String mail;
+
+  private Date dateCreation;
 
   /**
    * @return id
@@ -132,6 +135,22 @@ public class UserDto implements Serializable {
   public void setMail(String mail) {
 
     this.mail = mail;
+  }
+
+  /**
+   * @return dateCreation
+   */
+  public Date getDateCreation() {
+
+    return this.dateCreation;
+  }
+
+  /**
+   * @param dateCreation new value of {@link #getdateCreation}.
+   */
+  public void setDateCreation(Date dateCreation) {
+
+    this.dateCreation = dateCreation;
   }
 
 }

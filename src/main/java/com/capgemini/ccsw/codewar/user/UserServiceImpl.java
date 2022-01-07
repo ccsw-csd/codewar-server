@@ -1,6 +1,7 @@
 package com.capgemini.ccsw.codewar.user;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import net.sf.mmm.util.exception.api.ObjectNotFoundUserException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.capgemini.ccsw.codewar.configuration.mapper.BeanMapper;
 import com.capgemini.ccsw.codewar.user.model.UserDto;
 import com.capgemini.ccsw.codewar.user.model.UserEntity;
 
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private RoleRepository roleRepository;
 
+  @Autowired
+  private BeanMapper beanMapper;
+
   /**
    * {@inheritDoc}
    */
@@ -45,6 +50,45 @@ public class UserServiceImpl implements UserService {
   public UserEntity getByUsername(String username) {
 
     return this.userRepository.findByUsername(username);
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<UserDto> getByFilter(String filter) {
+
+    List<UserEntity> nameList;
+    List<UserDto> listDto;
+
+    nameList = this.userRepository.filtrarUsuarios(filter);
+
+    listDto = this.beanMapper.mapList(nameList, UserDto.class);
+
+    for (int i = 0; i < nameList.size(); i++) {
+      listDto.get(i).setRole(nameList.get(i).getRole().getName());
+    }
+
+    return listDto;
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<UserDto> getList() {
+
+    List<UserEntity> list = this.userRepository.findAll();
+
+    List<UserDto> listDto = this.beanMapper.mapList(list, UserDto.class);
+
+    for (int i = 0; i < list.size(); i++) {
+      listDto.get(i).setRole(list.get(i).getRole().getName());
+    }
+
+    return listDto;
 
   }
 
@@ -74,6 +118,26 @@ public class UserServiceImpl implements UserService {
       user.setDateCreation(new Date());
 
     return this.userRepository.save(user);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public UserEntity updateUserRole(UserDto userTo) {
+
+    UserEntity user = getByUsername(userTo.getUsername());
+
+    if (userTo.getRole().contains("Developer")) {
+      user.setRole(this.roleRepository.findByCode("DEVELOP"));
+    }
+
+    if (userTo.getRole().contains("Manager")) {
+      user.setRole(this.roleRepository.findByCode("MANAGER"));
+    }
+
+    return this.userRepository.save(user);
+
   }
 
   /**
