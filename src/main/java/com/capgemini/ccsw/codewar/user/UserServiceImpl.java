@@ -57,12 +57,12 @@ public class UserServiceImpl implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public List<UserDto> getByFilter(String filter) {
+  public List<UserDto> findByFilter(String filter) {
 
     List<UserEntity> nameList;
     List<UserDto> listDto;
 
-    nameList = this.userRepository.filtrarUsuarios(filter);
+    nameList = this.userRepository.findByFilter(filter);
 
     listDto = this.beanMapper.mapList(nameList, UserDto.class);
 
@@ -78,9 +78,9 @@ public class UserServiceImpl implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public List<UserDto> getList() {
+  public List<UserDto> findList() {
 
-    List<UserEntity> list = this.userRepository.findAll();
+    List<UserEntity> list = this.userRepository.findList();
 
     List<UserDto> listDto = this.beanMapper.mapList(list, UserDto.class);
 
@@ -124,17 +124,11 @@ public class UserServiceImpl implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public UserEntity updateUserRole(UserDto userTo) {
+  public UserEntity updateUserRole(String username, String role) {
 
-    UserEntity user = getByUsername(userTo.getUsername());
+    UserEntity user = getByUsername(username);
 
-    if (userTo.getRole().contains("Developer")) {
-      user.setRole(this.roleRepository.findByCode("DEVELOP"));
-    }
-
-    if (userTo.getRole().contains("Manager")) {
-      user.setRole(this.roleRepository.findByCode("MANAGER"));
-    }
+    user.setRole(this.roleRepository.findByCode(role));
 
     return this.userRepository.save(user);
 

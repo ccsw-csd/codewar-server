@@ -12,8 +12,11 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
   UserEntity findByUsername(String username);
 
-  @Query(value = "select * from user where concat(first_name, ' ', last_name, ' ', username) LIKE %:name% LIMIT 15", nativeQuery = true)
-  public List<UserEntity> filtrarUsuarios(@Param("name") String name);
+  @Query(value = "select * from user where concat(first_name, ' ', last_name, ' ', username) LIKE %:name% and role = 3 LIMIT 15", nativeQuery = true)
+  public List<UserEntity> findByFilter(@Param("name") String name);
+
+  @Query(value = "select * from user where role != 3", nativeQuery = true)
+  public List<UserEntity> findList();
 
   @Override
   List<UserEntity> findAll();

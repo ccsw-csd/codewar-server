@@ -28,14 +28,14 @@ public interface UserService {
    *
    * @return a {List<UserDto>}
    */
-  List<UserDto> getByFilter(String filter);
+  List<UserDto> findByFilter(String filter);
 
   /**
    * Get a list of users
    *
    * @return a {List<UserDto>}
    */
-  List<UserDto> getList();
+  List<UserDto> findList();
 
   /**
    * Saves or updates a user and store it in the database.
@@ -51,7 +51,7 @@ public interface UserService {
    * @param user the {@link UserDto} to update.
    * @return the new {@link UserEntity} that has been updated.
    */
-  UserEntity updateUserRole(UserDto user);
+  UserEntity updateUserRole(String username, String role);
 
   /**
    * Deletes a user from the database by its id 'userId'.

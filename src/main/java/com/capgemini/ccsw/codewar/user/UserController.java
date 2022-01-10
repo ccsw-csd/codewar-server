@@ -50,9 +50,9 @@ public class UserController {
    * @return
    */
   @RequestMapping(path = "/list", method = RequestMethod.GET)
-  public List<UserDto> getList() {
+  public List<UserDto> findList() {
 
-    return this.userService.getList();
+    return this.userService.findList();
   }
 
   /**
@@ -62,9 +62,9 @@ public class UserController {
    * @return
    */
   @RequestMapping(path = "/{filter}", method = RequestMethod.GET)
-  public List<UserDto> getByFilter(@PathVariable String filter) {
+  public List<UserDto> findByFilter(@PathVariable String filter) {
 
-    return this.userService.getByFilter(filter);
+    return this.userService.findByFilter(filter);
   }
 
   /**
@@ -95,13 +95,15 @@ public class UserController {
   /**
    * Actualiza el rol de un usuario
    *
-   * @param user
+   * @param username
+   * @param role
+   *
    * @return
    */
-  @RequestMapping(path = "/role", method = RequestMethod.POST)
-  public UserDto updateUserRole(@RequestBody UserDto user) {
+  @RequestMapping(path = "/{username}/{role}", method = RequestMethod.POST)
+  public UserDto updateUserRole(@PathVariable String username, @PathVariable String role) {
 
-    UserEntity entity = this.userService.updateUserRole(user);
+    UserEntity entity = this.userService.updateUserRole(username, role);
     return this.beanMapper.map(entity, UserDto.class);
   }
 
