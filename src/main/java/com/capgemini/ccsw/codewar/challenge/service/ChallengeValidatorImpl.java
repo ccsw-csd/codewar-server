@@ -124,11 +124,8 @@ public class ChallengeValidatorImpl implements ChallengeValidator {
          checkTypeParameter(test.getName(), errors, order++, challenge.getOutParameter(), test.getValueOut());
 
          for (int i = 0; i < challenge.getInParameter().size(); i++) {
-
             checkTypeParameter(test.getName(), errors, order++, challenge.getInParameter().get(i), test.getValueIn().get(i));
-
          }
-
       }
 
    }
