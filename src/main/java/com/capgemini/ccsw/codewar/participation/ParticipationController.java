@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.codewar.dummy;
+package com.capgemini.ccsw.codewar.participation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.ccsw.codewar.configuration.security.UserInfoAppDto;
 import com.capgemini.ccsw.codewar.configuration.security.UserUtils;
-import com.capgemini.ccsw.codewar.dummy.service.Participation;
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationExecutionTo;
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationTo;
-import com.capgemini.ccsw.codewar.dummy.to.CodeInTo;
+import com.capgemini.ccsw.codewar.participation.service.Participation;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationExecutionTo;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationTo;
+import com.capgemini.ccsw.codewar.participation.to.CodeInTo;
 
 @RequestMapping(value = "/participation/")
 @RestController

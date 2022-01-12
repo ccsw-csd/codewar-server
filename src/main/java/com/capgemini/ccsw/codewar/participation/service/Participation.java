@@ -1,7 +1,7 @@
-package com.capgemini.ccsw.codewar.dummy.service;
+package com.capgemini.ccsw.codewar.participation.service;
 
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationExecutionTo;
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationTo;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationExecutionTo;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationTo;
 
 public interface Participation {
 

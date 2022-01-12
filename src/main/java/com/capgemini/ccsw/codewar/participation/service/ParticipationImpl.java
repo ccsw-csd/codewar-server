@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.codewar.dummy.service;
+package com.capgemini.ccsw.codewar.participation.service;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import com.capgemini.ccsw.codewar.compiler.JavaCompiler;
 import com.capgemini.ccsw.codewar.compiler.to.CodeDiagnosticTo;
 import com.capgemini.ccsw.codewar.compiler.to.CompilerException;
 import com.capgemini.ccsw.codewar.compiler.to.TestExecutionResultTo;
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationExecutionTo;
-import com.capgemini.ccsw.codewar.dummy.to.ChallengeParticipationTo;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationExecutionTo;
+import com.capgemini.ccsw.codewar.participation.to.ChallengeParticipationTo;
 
 @Service
 public class ParticipationImpl implements Participation {

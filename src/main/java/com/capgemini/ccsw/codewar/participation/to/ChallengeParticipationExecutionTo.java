@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.codewar.dummy.to;
+package com.capgemini.ccsw.codewar.participation.to;
 
 import java.util.List;
 
