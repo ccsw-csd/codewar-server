@@ -8,6 +8,8 @@ public interface ChallengeItemListTo {
 
    String getName();
 
+   String getDescription();
+
    String getStatusCode();
 
    String getStatusName();
