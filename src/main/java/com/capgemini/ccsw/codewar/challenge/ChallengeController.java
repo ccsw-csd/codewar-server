@@ -16,8 +16,7 @@ import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
 import com.capgemini.ccsw.codewar.user.UserService;
 
 /**
- * The service implementation for REST calls in order to execute the logic of
- * component {@link UserService}.
+ * The service implementation for REST calls in order to execute the logic of component {@link UserService}.
  *
  * @author rroigped
  */
@@ -25,49 +24,55 @@ import com.capgemini.ccsw.codewar.user.UserService;
 @RestController
 public class ChallengeController {
 
-   @Autowired
-   private Challenge challengeService;
+  @Autowired
+  private Challenge challengeService;
 
-   @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-   public ChallengeSaveTo get(@PathVariable("id") long id) {
+  @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+  public ChallengeSaveTo get(@PathVariable("id") long id) {
 
-      return this.challengeService.get(id);
-   }
+    return this.challengeService.get(id);
+  }
 
-   @RequestMapping(path = "/", method = RequestMethod.GET)
-   public List<ChallengeItemListTo> find() {
+  @RequestMapping(path = "/", method = RequestMethod.GET)
+  public List<ChallengeItemListTo> find() {
 
-      return this.challengeService.find();
-   }
+    return this.challengeService.find();
+  }
 
-   @RequestMapping(path = "/{id}/", method = RequestMethod.POST)
-   public ChallengeSaveTo saveOrUpdate(@PathVariable("id") Long id, @RequestBody ChallengeSaveTo challenge) {
+  @RequestMapping(path = "/active", method = RequestMethod.GET)
+  public List<ChallengeItemListTo> findActiveChallenges() {
 
-      return this.challengeService.saveOrUpdate(id, challenge);
-   }
+    return this.challengeService.findActiveChallenges();
+  }
 
-   @RequestMapping(path = "/", method = RequestMethod.POST)
-   public ChallengeSaveTo saveOrUpdate(@RequestBody ChallengeSaveTo challenge) {
+  @RequestMapping(path = "/{id}/", method = RequestMethod.POST)
+  public ChallengeSaveTo saveOrUpdate(@PathVariable("id") Long id, @RequestBody ChallengeSaveTo challenge) {
 
-      return this.saveOrUpdate(null, challenge);
-   }
+    return this.challengeService.saveOrUpdate(id, challenge);
+  }
 
-   @RequestMapping(path = "/{id}/", method = RequestMethod.DELETE)
-   public void delete(@PathVariable("id") Long id) {
+  @RequestMapping(path = "/", method = RequestMethod.POST)
+  public ChallengeSaveTo saveOrUpdate(@RequestBody ChallengeSaveTo challenge) {
 
-      this.challengeService.delete(id);
-   }
+    return this.saveOrUpdate(null, challenge);
+  }
 
-   @RequestMapping(path = "/{id}/check", method = RequestMethod.GET)
-   public ChallengeActivateResponseTo check(@PathVariable("id") Long id) {
+  @RequestMapping(path = "/{id}/", method = RequestMethod.DELETE)
+  public void delete(@PathVariable("id") Long id) {
 
-      return this.challengeService.check(id);
-   }
+    this.challengeService.delete(id);
+  }
 
-   @RequestMapping(path = "/{id}/activate", method = RequestMethod.GET)
-   public ChallengeActivateResponseTo checkAndActivate(@PathVariable("id") Long id) {
+  @RequestMapping(path = "/{id}/check", method = RequestMethod.GET)
+  public ChallengeActivateResponseTo check(@PathVariable("id") Long id) {
 
-      return this.challengeService.checkAndActivate(id);
-   }
+    return this.challengeService.check(id);
+  }
+
+  @RequestMapping(path = "/{id}/activate", method = RequestMethod.GET)
+  public ChallengeActivateResponseTo checkAndActivate(@PathVariable("id") Long id) {
+
+    return this.challengeService.checkAndActivate(id);
+  }
 
 }

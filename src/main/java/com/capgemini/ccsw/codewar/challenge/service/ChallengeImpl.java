@@ -25,128 +25,139 @@ import com.capgemini.ccsw.codewar.user.UserService;
 @Transactional
 public class ChallengeImpl implements Challenge {
 
-   /** Logger instance. */
-   private static final Logger LOG = LoggerFactory.getLogger(ChallengeImpl.class);
+  /** Logger instance. */
+  private static final Logger LOG = LoggerFactory.getLogger(ChallengeImpl.class);
 
-   @Autowired
-   private ChallengeRepository challengeRepository;
+  @Autowired
+  private ChallengeRepository challengeRepository;
 
-   @Autowired
-   private UserService userService;
+  @Autowired
+  private UserService userService;
 
-   @Autowired
-   private MasterService masterService;
+  @Autowired
+  private MasterService masterService;
 
-   @Autowired
-   private ChallengeMapper challengeMapper;
+  @Autowired
+  private ChallengeMapper challengeMapper;
 
-   @Autowired
-   private ChallengeSaver challengeSaver;
+  @Autowired
+  private ChallengeSaver challengeSaver;
 
-   @Autowired
-   private ChallengeValidator challengeValidator;
+  @Autowired
+  private ChallengeValidator challengeValidator;
 
-   @Autowired
-   private BeanMapper beanMapper;
+  @Autowired
+  private BeanMapper beanMapper;
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public List<ChallengeItemListTo> find() {
-
-      return this.challengeRepository.findChallengesWithParticipationNum();
-
-   }
-
-   /**
+  /**
    * {@inheritDoc}
    */
-   @Override
-   public ChallengeSaveTo get(long id) {
+  @Override
+  public List<ChallengeItemListTo> find() {
 
-      ChallengeEntity challengeEntity = this.challengeRepository.findById(id).orElse(null);
-      if (challengeEntity == null)
-         return new ChallengeSaveTo();
+    return this.challengeRepository.findChallengesWithParticipationNum();
 
-      ChallengeSaveTo challenge = this.beanMapper.map(challengeEntity, ChallengeSaveTo.class);
+  }
 
-      challenge.setOutParameter(challengeMapper.findOutParameterByChallengeId(id));
-      challenge.setInParameter(challengeMapper.findParametersByChallengeId(id));
-      challenge.setTags(challengeMapper.findTagsByChallengeId(id));
-      challenge.setTest(challengeMapper.findTestsByChallengeId(id));
-
-      return challenge;
-   }
-
-   /**
+  /**
    * {@inheritDoc}
    */
-   @Override
-   public ChallengeSaveTo saveOrUpdate(Long id, ChallengeSaveTo challengeTo) {
+  @Override
+  public List<ChallengeItemListTo> findActiveChallenges() {
 
-      ChallengeEntity challenge = new ChallengeEntity();
+    return this.challengeRepository.findActiveChallenges();
 
-      if (id != null) {
-         challengeSaver.removeChallengeData(id);
-         challenge = this.challengeRepository.findById(id).orElse(new ChallengeEntity());
-      } //
-      else {
-         challenge.setStatus(masterService.getStatusByCode(StatusEntity.BORRADOR).get());
-      }
+  }
 
-      BeanUtils.copyProperties(challengeTo, challenge);
-      challenge.setUser(this.userService.get(UserUtils.getUserDetails().getId()));
-      challenge.setCreationDate(new Date());
-
-      challenge = this.challengeRepository.save(challenge);
-
-      challengeSaver.saveTags(challenge, challengeTo);
-      challengeSaver.saveParametersAndTests(challenge, challengeTo);
-
-      return get(challenge.getId());
-   }
-
-   /**
+  /**
    * {@inheritDoc}
    */
-   @Override
-   public void delete(Long id) {
+  @Override
+  public ChallengeSaveTo get(long id) {
 
-      challengeSaver.removeChallengeData(id);
-      this.challengeRepository.deleteById(id);
-   }
+    ChallengeEntity challengeEntity = this.challengeRepository.findById(id).orElse(null);
+    if (challengeEntity == null)
+      return new ChallengeSaveTo();
 
-   /**
+    ChallengeSaveTo challenge = this.beanMapper.map(challengeEntity, ChallengeSaveTo.class);
+
+    challenge.setOutParameter(this.challengeMapper.findOutParameterByChallengeId(id));
+    challenge.setInParameter(this.challengeMapper.findParametersByChallengeId(id));
+    challenge.setTags(this.challengeMapper.findTagsByChallengeId(id));
+    challenge.setTest(this.challengeMapper.findTestsByChallengeId(id));
+
+    return challenge;
+  }
+
+  /**
    * {@inheritDoc}
    */
-   @Override
-   public ChallengeActivateResponseTo check(Long id) {
+  @Override
+  public ChallengeSaveTo saveOrUpdate(Long id, ChallengeSaveTo challengeTo) {
 
-      ChallengeSaveTo challenge = this.get(id);
-      return challengeValidator.check(challenge);
+    ChallengeEntity challenge = new ChallengeEntity();
 
-   }
+    if (id != null) {
+      this.challengeSaver.removeChallengeData(id);
+      challenge = this.challengeRepository.findById(id).orElse(new ChallengeEntity());
+    } //
+    else {
+      challenge.setStatus(this.masterService.getStatusByCode(StatusEntity.BORRADOR).get());
+    }
 
-   /**
+    BeanUtils.copyProperties(challengeTo, challenge);
+    challenge.setUser(this.userService.get(UserUtils.getUserDetails().getId()));
+    challenge.setCreationDate(new Date());
+
+    challenge = this.challengeRepository.save(challenge);
+
+    this.challengeSaver.saveTags(challenge, challengeTo);
+    this.challengeSaver.saveParametersAndTests(challenge, challengeTo);
+
+    return get(challenge.getId());
+  }
+
+  /**
    * {@inheritDoc}
    */
-   @Override
-   public ChallengeActivateResponseTo checkAndActivate(Long id) {
-      ChallengeSaveTo challengeTo = this.get(id);
-      ChallengeActivateResponseTo checkData = challengeValidator.check(challengeTo);
+  @Override
+  public void delete(Long id) {
 
-      if (checkData.isValid()) {
-         ChallengeEntity challenge = this.challengeRepository.findById(id).get();
+    this.challengeSaver.removeChallengeData(id);
+    this.challengeRepository.deleteById(id);
+  }
 
-         challenge.setStatus(masterService.getStatusByCode(StatusEntity.ACTIVADO).get());
-         challenge.setStartDate(new Date());
-         challenge.setBaseCode(challengeValidator.generateBaseCode(challengeTo));
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ChallengeActivateResponseTo check(Long id) {
 
-         challengeRepository.save(challenge);
-      }
+    ChallengeSaveTo challenge = get(id);
+    return this.challengeValidator.check(challenge);
 
-      return checkData;
-   }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ChallengeActivateResponseTo checkAndActivate(Long id) {
+
+    ChallengeSaveTo challengeTo = get(id);
+    ChallengeActivateResponseTo checkData = this.challengeValidator.check(challengeTo);
+
+    if (checkData.isValid()) {
+      ChallengeEntity challenge = this.challengeRepository.findById(id).get();
+
+      challenge.setStatus(this.masterService.getStatusByCode(StatusEntity.ACTIVADO).get());
+      challenge.setStartDate(new Date());
+      challenge.setBaseCode(this.challengeValidator.generateBaseCode(challengeTo));
+
+      this.challengeRepository.save(challenge);
+    }
+
+    return checkData;
+  }
 
 }
