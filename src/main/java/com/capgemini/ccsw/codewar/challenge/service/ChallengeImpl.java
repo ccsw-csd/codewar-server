@@ -14,6 +14,7 @@ import com.capgemini.ccsw.codewar.challenge.model.ChallengeEntity;
 import com.capgemini.ccsw.codewar.challenge.repository.ChallengeRepository;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeActivateResponseTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeItemListTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeMinimalTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
 import com.capgemini.ccsw.codewar.configuration.mapper.BeanMapper;
 import com.capgemini.ccsw.codewar.configuration.security.UserUtils;
@@ -147,6 +148,14 @@ public class ChallengeImpl implements Challenge {
       }
 
       return checkData;
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public ChallengeMinimalTo getMinimal(long id) {
+      return challengeRepository.getChallengeMinimal(id);
    }
 
 }

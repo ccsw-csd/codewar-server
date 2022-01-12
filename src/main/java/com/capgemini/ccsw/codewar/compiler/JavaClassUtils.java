@@ -2,8 +2,10 @@ package com.capgemini.ccsw.codewar.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticCollector;
@@ -14,10 +16,15 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeParameterTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
 import com.capgemini.ccsw.codewar.compiler.to.CodeDiagnosticTo;
+import com.capgemini.ccsw.codewar.compiler.to.CompilerException;
+import com.capgemini.ccsw.codewar.master.model.ParameterType;
 
 /**
  * @author pajimene
@@ -26,6 +33,14 @@ import com.capgemini.ccsw.codewar.compiler.to.CodeDiagnosticTo;
 public class JavaClassUtils {
    private static final Logger LOG = LoggerFactory.getLogger(JavaClassUtils.class);
 
+   /**
+    * Compila la clase Java y devuelve los fallos de compilación, si es que tuviera
+    * @param javaContent
+    * @param className
+    * @param compilationPath
+    * @return
+    * @throws IOException
+    */
    public static ArrayList<CodeDiagnosticTo> compileJavaContentInMemory(String javaContent, String className, File compilationPath) throws IOException {
 
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -62,215 +77,174 @@ public class JavaClassUtils {
       return diagnosticsTO;
    }
 
-   /*
-   public static File createAndCompileMainClass(CompilationDataTo data, File compilationPath) throws CompilerException {
-   
+   /**
+    * Crea y compila una clase Main para ejecutar los tests del reto
+    * @param challenge
+    * @param compilationPath
+    * @return
+    * @throws CompilerException
+    */
+   public static File createAndCompileMainClass(ChallengeSaveTo challenge, File compilationPath) throws CompilerException {
+
       File javaFile = null;
-   
+
       try {
-         ParametersEntity outParameter = getOutParameter(data);
-         List<ParametersEntity> inParameters = getOrderedInParameters(data);
-   
+
+         ChallengeParameterTo outParameter = challenge.getOutParameter();
+         List<ChallengeParameterTo> inParameters = challenge.getInParameter();
+
+         ParameterType outParameterType = ParameterType.fromString(outParameter.getType());
+
          String contentJavaFile = getMainClass();
-   
-         if (TypesEntity.STRING.equals(outParameter.getType())) {
+
+         if (ParameterType.String.equals(outParameterType)) {
             contentJavaFile = contentJavaFile.replace("${expectedResult}", "args[0]");
             contentJavaFile = contentJavaFile.replace("${commentStringStart}", "");
             contentJavaFile = contentJavaFile.replace("${commentStringEnd}", "");
          }
-         if (TypesEntity.LONG.equals(outParameter.getType())) {
+         if (ParameterType.Long.equals(outParameterType)) {
             contentJavaFile = contentJavaFile.replace("${expectedResult}", "convertToLong(args[0])");
             contentJavaFile = contentJavaFile.replace("${commentLongStart}", "");
             contentJavaFile = contentJavaFile.replace("${commentLongEnd}", "");
          }
-         if (TypesEntity.ARRAY_LONG.equals(outParameter.getType())) {
+         if (ParameterType.Long_array.equals(outParameterType)) {
             contentJavaFile = contentJavaFile.replace("${expectedResult}", "convertToArrayLong(args[0])");
             contentJavaFile = contentJavaFile.replace("${commentArrayLongStart}", "");
             contentJavaFile = contentJavaFile.replace("${commentArrayLongEnd}", "");
          }
-         if (TypesEntity.ARRAY_STRING.equals(outParameter.getType())) {
+         if (ParameterType.String_array.equals(outParameterType)) {
             contentJavaFile = contentJavaFile.replace("${expectedResult}", "convertToArrayString(args[0])");
             contentJavaFile = contentJavaFile.replace("${commentArrayStringStart}", "");
             contentJavaFile = contentJavaFile.replace("${commentArrayStringEnd}", "");
          }
-   
+
          contentJavaFile = contentJavaFile.replace("${commentArrayStringStart}", "/**");
-         contentJavaFile = contentJavaFile.replace("${commentArrayStringEnd}", "**//*");  Quitar /*
-                                                                                    contentJavaFile = contentJavaFile.replace("${commentArrayLongStart}", "/**");
-                                                                                    contentJavaFile = contentJavaFile.replace("${commentArrayLongEnd}", "**//*"); Quitar /*
-                                                                                                                                                             contentJavaFile = contentJavaFile.replace("${commentStringStart}", "/**");
-                                                                                                                                                             contentJavaFile = contentJavaFile.replace("${commentStringEnd}", "**//*");  Quitar /*
-                                                                                                                                                                                                                                   contentJavaFile = contentJavaFile.replace("${commentLongStart}", "/**");
-                                                                                                                                                                                                                                   contentJavaFile = contentJavaFile.replace("${commentLongEnd}", "**//*");  Quitar /*
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       contentJavaFile = contentJavaFile.replace("${className}", data.getClassName());
-                                                                                                                                                                                                                                                                                                       contentJavaFile = contentJavaFile.replace("${methodName}", data.getMethodName());
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       contentJavaFile = contentJavaFile.replace("${outType}", getJavaType(outParameter.getType()));
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       String inParams = "";
-                                                                                                                                                                                                                                                                                                       for (int i = 0; i < inParameters.size(); i++) {
-                                                                                                                                                                                                                                                                                                       ParametersEntity inParameter = inParameters.get(i);
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       if (i > 0)
-                                                                                                                                                                                                                                                                                                       inParams += ",";
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       String arg = "args[" + (i + 1) + "]";
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.STRING.equals(inParameter.getType())) {
-                                                                                                                                                                                                                                                                                                       inParams += arg + ".replace(\"\\\"\", \"\")";
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.LONG.equals(inParameter.getType())) {
-                                                                                                                                                                                                                                                                                                       inParams += "convertToLong(" + arg + ")";
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.ARRAY_LONG.equals(inParameter.getType())) {
-                                                                                                                                                                                                                                                                                                       inParams += "convertToArrayLong(" + arg + ")";
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.ARRAY_STRING.equals(inParameter.getType())) {
-                                                                                                                                                                                                                                                                                                       inParams += "convertToArrayString(" + arg + ")";
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       contentJavaFile = contentJavaFile.replace("${inParams}", inParams);
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       javaFile = new File(compilationPath, "Main.java");
-                                                                                                                                                                                                                                                                                                       FileUtils.write(javaFile, contentJavaFile, Charset.forName("UTF-8"));
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       String javaCompileCommand = "javac " + javaFile.getName();
-                                                                                                                                                                                                                                                                                                       SystemCommandExecutor.ExecuteSyncCommand(javaCompileCommand, compilationPath);
-                                                                                                                                                                                                                                                                                                       } catch (IOException e) {
-                                                                                                                                                                                                                                                                                                       LOG.error("Error al compilar el fichero Main.java", e);
-                                                                                                                                                                                                                                                                                                       throw new CompilerException("Compilation error", e.getCause());
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       return javaFile;
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       public static String getJavaType(String type) {
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.ARRAY_LONG.equals(type))
-                                                                                                                                                                                                                                                                                                       return "long[]";
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.ARRAY_STRING.equals(type))
-                                                                                                                                                                                                                                                                                                       return "String[]";
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.LONG.equals(type))
-                                                                                                                                                                                                                                                                                                       return "long";
-                                                                                                                                                                                                                                                                                                       if (TypesEntity.STRING.equals(type))
-                                                                                                                                                                                                                                                                                                       return "String";
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       return null;
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       private static ParametersEntity getOutParameter(CompilationDataTo data) {
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       TestEntity test = data.getTests().get(0);
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       for (ParameterValueEntity parameterValue : test.getParametersValue()) {
-                                                                                                                                                                                                                                                                                                       if (!parameterValue.getParameter().getInput())
-                                                                                                                                                                                                                                                                                                       return parameterValue.getParameter();
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       return null;
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       private static List<ParametersEntity> getOrderedInParameters(CompilationDataTo data) {
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       TestEntity test = data.getTests().get(0);
-                                                                                                                                                                                                                                                                                                       List<ParametersEntity> inParameters = new ArrayList<>();
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       for (ParameterValueEntity parameterValue : test.getParametersValue()) {
-                                                                                                                                                                                                                                                                                                       if (parameterValue.getParameter().getInput())
-                                                                                                                                                                                                                                                                                                       inParameters.add(parameterValue.getParameter());
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       Collections.sort(inParameters, new Comparator<ParametersEntity>() {
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       @Override
-                                                                                                                                                                                                                                                                                                       public int compare(ParametersEntity o1, ParametersEntity o2) {
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       return o1.getOrder() - o2.getOrder();
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       });
-                                                                                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                                                                       return inParameters;
-                                                                                                                                                                                                                                                                                                       }
-                                                                                                                                                                                                                                                                                                       */
+         contentJavaFile = contentJavaFile.replace("${commentArrayStringEnd}", "**/");
+         contentJavaFile = contentJavaFile.replace("${commentArrayLongStart}", "/**");
+         contentJavaFile = contentJavaFile.replace("${commentArrayLongEnd}", "**/");
+         contentJavaFile = contentJavaFile.replace("${commentStringStart}", "/**");
+         contentJavaFile = contentJavaFile.replace("${commentStringEnd}", "**/");
+         contentJavaFile = contentJavaFile.replace("${commentLongStart}", "/**");
+         contentJavaFile = contentJavaFile.replace("${commentLongEnd}", "**/");
+
+         contentJavaFile = contentJavaFile.replace("${className}", challenge.getClassName());
+         contentJavaFile = contentJavaFile.replace("${methodName}", challenge.getFunctionName());
+
+         contentJavaFile = contentJavaFile.replace("${outType}", outParameter.getType());
+
+         String inParams = "";
+         for (int i = 0; i < inParameters.size(); i++) {
+            ChallengeParameterTo inParameter = inParameters.get(i);
+
+            ParameterType inParameterType = ParameterType.fromString(inParameter.getType());
+
+            if (i > 0)
+               inParams += ",";
+
+            String arg = "args[" + (i + 1) + "]";
+
+            if (ParameterType.String.equals(inParameterType)) {
+               inParams += arg + ".replace(\"\\\"\", \"\")";
+            }
+            if (ParameterType.Long.equals(inParameterType)) {
+               inParams += "convertToLong(" + arg + ")";
+            }
+            if (ParameterType.Long_array.equals(inParameterType)) {
+               inParams += "convertToArrayLong(" + arg + ")";
+            }
+            if (ParameterType.String_array.equals(inParameterType)) {
+               inParams += "convertToArrayString(" + arg + ")";
+            }
+
+         }
+         contentJavaFile = contentJavaFile.replace("${inParams}", inParams);
+
+         javaFile = new File(compilationPath, "Main.java");
+         FileUtils.write(javaFile, contentJavaFile, Charset.forName("UTF-8"));
+
+         String javaCompileCommand = "javac " + javaFile.getName();
+         SystemCommandExecutor.ExecuteSyncCommand(javaCompileCommand, compilationPath);
+      } catch (IOException e) {
+         LOG.error("Error al compilar el fichero Main.java", e);
+         throw new CompilerException("Compilation error", e.getCause());
+      }
+
+      return javaFile;
+   }
 
    /**
    * Lo siento, dentro de Docker no lee los resources externos, lo dejo en una constante.
    * @return
    */
-   /*
    private static String getMainClass() {
-   
-      return "public class Main {" + //
-            "" + //
-            "  public static void main(String[] args) {" + //
-            "" + //
-            "    ${className} object = new ${className}();" + //
-            "    " + //
-            "    ${outType} expectedResult = ${expectedResult};" + //
-            "    ${outType} result = object.${methodName}(${inParams});" + //
-            "    " + //
-            "    ${commentArrayStringStart}" + //
-            "    for (int i = 0; i < expectedResult.length; i++) {" + //
-            "      String expectedData = expectedResult[i];" + //
-            "      String resultData = result[i];" + //
-            "      " + //
-            "      if (!expectedData.equals(resultData))" + //
-            "        System.exit(-1);        " + //
-            "    }" + //
-            "    ${commentArrayStringEnd}" + //
-            "    " + //
-            "    ${commentArrayLongStart}" + //
-            "    for (int i = 0; i < expectedResult.length; i++) {" + //
-            "      long expectedData = expectedResult[i];" + //
-            "      long resultData = result[i];" + //
-            "      " + //
-            "      if (expectedData != resultData)" + //
-            "        System.exit(-1);" + //
-            "    }" + //
-            "    ${commentArrayLongEnd}    " + //
-            "    " + //
-            "    ${commentStringStart}" + //
-            "    if (!expectedResult.equals(result))" + //
-            "      System.exit(-1);" + //
-            "    ${commentStringEnd}" + //
-            "    " + //
-            "    ${commentLongStart}" + //
-            "    if (expectedResult != result)" + //
-            "      System.exit(-1);" + //
-            "    ${commentLongEnd}" + //
-            "    " + //
-            "    System.exit(1);" + //
-            "  }" + //
-            "  " + //
-            "  " + //
-            "  private static long convertToLong(String data) {" + //
-            "    data = data.replace(\"\\\"\", \"\");" + //
-            "    return Long.parseLong(data);" + //
-            "  }" + //
-            "" + //
-            "  private static long[] convertToArrayLong(String data) {" + //
-            "    data = data.replace(\"\\\"\", \"\");" + //
-            "    String[] arrayData = data.split(\",\");" + //
-            "    long[] arrayLong = new long[arrayData.length];" + //
-            "    " + //
-            "    for (int i = 0; i < arrayData.length; i++) {" + //
-            "      arrayLong[i] = Long.parseLong(arrayData[i]);" + //
-            "    }" + //
-            "    " + //
-            "    return arrayLong;" + //
-            "  }" + //
-            "" + //
-            "  private static String[] convertToArrayString(String data) {" + //
-            "    data = data.replace(\"\\\"\", \"\");" + //
-            "    return data.split(\",\");" + //
-            "  }" + //
-            "  " + //
-            "}" + //
+
+      return "public class Main {\n" + //
+            "\n" + //
+            "  public static void main(String[] args) {\n" + //
+            "\n" + //
+            "    ${className} object = new ${className}();\n" + //
+            "    \n" + //
+            "    ${outType} expectedResult = ${expectedResult};\n" + //
+            "    ${outType} result = object.${methodName}(${inParams});\n" + //
+            "    \n" + //
+            "    ${commentArrayStringStart}\n" + //
+            "    for (int i = 0; i < expectedResult.length; i++) {\n" + //
+            "      String expectedData = expectedResult[i];\n" + //
+            "      String resultData = result[i];\n" + //
+            "      \n" + //
+            "      if (!expectedData.equals(resultData))\n" + //
+            "        System.exit(-1);        \n" + //
+            "    }\n" + //
+            "    ${commentArrayStringEnd}\n" + //
+            "    \n" + //
+            "    ${commentArrayLongStart}\n" + //
+            "    for (int i = 0; i < expectedResult.length; i++) {\n" + //
+            "      long expectedData = expectedResult[i];\n" + //
+            "      long resultData = result[i];\n" + //
+            "      \n" + //
+            "      if (expectedData != resultData)\n" + //
+            "        System.exit(-1);\n" + //
+            "    }\n" + //
+            "    ${commentArrayLongEnd}    \n" + //
+            "    \n" + //
+            "    ${commentStringStart}\n" + //
+            "    if (!expectedResult.equals(result))\n" + //
+            "      System.exit(-1);\n" + //
+            "    ${commentStringEnd}\n" + //
+            "    \n" + //
+            "    ${commentLongStart}\n" + //
+            "    if (expectedResult != result)\n" + //
+            "      System.exit(-1);\n" + //
+            "    ${commentLongEnd}\n" + //
+            "    \n" + //
+            "    System.exit(1);\n" + //
+            "  }\n" + //
+            "  \n" + //
+            "  \n" + //
+            "  private static long convertToLong(String data) {\n" + //
+            "    data = data.replace(\"\\\"\", \"\");\n" + //
+            "    return Long.parseLong(data);\n" + //
+            "  }\n" + //
+            "\n" + //
+            "  private static long[] convertToArrayLong(String data) {\n" + //
+            "    data = data.replace(\"\\\"\", \"\");\n" + //
+            "    String[] arrayData = data.split(\",\");\n" + //
+            "    long[] arrayLong = new long[arrayData.length];\n" + //
+            "    \n" + //
+            "    for (int i = 0; i < arrayData.length; i++) {\n" + //
+            "      arrayLong[i] = Long.parseLong(arrayData[i]);\n" + //
+            "    }\n" + //
+            "    \n" + //
+            "    return arrayLong;\n" + //
+            "  }\n" + //
+            "\n" + //
+            "  private static String[] convertToArrayString(String data) {\n" + //
+            "    data = data.replace(\"\\\"\", \"\");\n" + //
+            "    return data.split(\",\");\n" + //
+            "  }\n" + //
+            "  \n" + //
+            "}\n" + //
             "";
    }
-   */
 
 }

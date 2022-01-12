@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.capgemini.ccsw.codewar.challenge.model.ChallengeEntity;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeItemListTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeMinimalTo;
 
 public interface ChallengeRepository extends CrudRepository<ChallengeEntity, Long> {
 
@@ -17,5 +18,10 @@ public interface ChallengeRepository extends CrudRepository<ChallengeEntity, Lon
          + "from challenge c join challenge_status cs on c.status_id = cs.id " //
          + "order by status_id, start_date DESC, creation_date desc", nativeQuery = true)
    List<ChallengeItemListTo> findChallengesWithParticipationNum();
+
+   @Query(value = "select c.id as id, c.name as name, c.description as description, c.base_code as baseCode " //
+         + "from challenge c " //
+         + "where c.id = :id", nativeQuery = true)
+   ChallengeMinimalTo getChallengeMinimal(Long id);
 
 }

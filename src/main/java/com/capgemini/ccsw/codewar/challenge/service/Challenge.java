@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeActivateResponseTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeItemListTo;
+import com.capgemini.ccsw.codewar.challenge.to.ChallengeMinimalTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeSaveTo;
 
 public interface Challenge {
@@ -49,5 +50,12 @@ public interface Challenge {
     * @return
     */
    ChallengeActivateResponseTo checkAndActivate(Long id);
+
+   /**
+    * Recupera un challenge con los datos mínimos para participar
+    * @param id
+    * @return
+    */
+   ChallengeMinimalTo getMinimal(long id);
 
 }

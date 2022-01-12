@@ -15,6 +15,7 @@ import com.capgemini.ccsw.codewar.challenge.to.ChallengeTestValueTo;
 import com.capgemini.ccsw.codewar.compiler.JavaCompiler;
 import com.capgemini.ccsw.codewar.compiler.to.CodeDiagnosticTo;
 import com.capgemini.ccsw.codewar.compiler.to.CompilerException;
+import com.capgemini.ccsw.codewar.master.model.ParameterType;
 
 @Service
 public class ChallengeValidatorImpl implements ChallengeValidator {
@@ -134,34 +135,42 @@ public class ChallengeValidatorImpl implements ChallengeValidator {
 
       boolean parameterError = false;
 
-      if (parameter.getType().equals("String")) {
+      ParameterType type = ParameterType.fromString(parameter.getType());
 
-         parameterError = false;
-
+      if (type == null) {
+         parameterError = true;
       } //
-      else if (parameter.getType().equals("String[]")) {
 
-         parameterError = false;
-      } //
-      else if (parameter.getType().equals("long")) {
+      else {
 
-         try {
-            Long.parseLong(value.getValue());
-         } catch (Exception e) {
-            parameterError = true;
+         if (type.equals(ParameterType.String)) {
+            parameterError = false;
          }
-      } else if (parameter.getType().equals("long[]")) {
-         String[] values = value.getValue().split(";");
-         for (String singleValue : values) {
+
+         if (type.equals(ParameterType.String_array)) {
+            parameterError = false;
+         }
+
+         if (type.equals(ParameterType.Long)) {
             try {
-               Long.parseLong(singleValue);
+               Long.parseLong(value.getValue());
             } catch (Exception e) {
                parameterError = true;
-               break;
             }
-
          }
-      } //
+
+         if (type.equals(ParameterType.Long_array)) {
+            String[] values = value.getValue().split(";");
+            for (String singleValue : values) {
+               try {
+                  Long.parseLong(singleValue);
+               } catch (Exception e) {
+                  parameterError = true;
+                  break;
+               }
+            }
+         } //
+      }
 
       if (parameterError) {
          if (order == 0)
