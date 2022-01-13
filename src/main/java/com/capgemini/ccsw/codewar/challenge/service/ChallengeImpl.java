@@ -170,4 +170,14 @@ public class ChallengeImpl implements Challenge {
       return challengeRepository.getChallengeMinimal(id);
    }
 
+   @Override
+   public void finalize(Long id) {
+      ChallengeEntity challenge = this.challengeRepository.findById(id).get();
+
+      challenge.setStatus(this.masterService.getStatusByCode(StatusEntity.CERRADO).get());
+      challenge.setEndDate(new Date());
+
+      this.challengeRepository.save(challenge);
+   }
+
 }

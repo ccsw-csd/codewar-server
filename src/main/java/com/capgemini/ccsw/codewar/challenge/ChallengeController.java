@@ -63,16 +63,22 @@ public class ChallengeController {
       this.challengeService.delete(id);
    }
 
-   @RequestMapping(path = "/{id}/check", method = RequestMethod.GET)
+   @RequestMapping(path = "/{id}/check/", method = RequestMethod.GET)
    public ChallengeActivateResponseTo check(@PathVariable("id") Long id) {
 
       return this.challengeService.check(id);
    }
 
-   @RequestMapping(path = "/{id}/activate", method = RequestMethod.POST)
+   @RequestMapping(path = "/{id}/activate/", method = RequestMethod.POST)
    public ChallengeActivateResponseTo checkAndActivate(@PathVariable("id") Long id) {
 
       return this.challengeService.checkAndActivate(id);
+   }
+
+   @RequestMapping(path = "/{id}/finalize/", method = RequestMethod.POST)
+   public void finalize(@PathVariable("id") Long id) {
+
+      this.challengeService.finalize(id);
    }
 
 }
