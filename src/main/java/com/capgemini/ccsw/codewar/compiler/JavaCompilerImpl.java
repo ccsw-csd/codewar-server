@@ -35,9 +35,8 @@ public class JavaCompilerImpl implements JavaCompiler {
    @Override
    public List<TestExecutionResultTo> compileAndExecuteTests(String code, ChallengeSaveTo challenge, boolean allTests) throws CompilerException {
 
-      //File compilationPath = Files.createTempDir();
+      File compilationPath = Files.createTempDir();
       String className = challenge.getClassName();
-      File compilationPath = new File("c:\\tmp\\codewar\\");
 
       try {
          List<CodeDiagnosticTo> compileErrors = JavaClassUtils.compileJavaContentInMemory(code, className, compilationPath);
