@@ -9,6 +9,8 @@ public class ChallengeSaveTo implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
+   private String statusCode;
+
    private String name;
 
    private String description;
@@ -145,6 +147,20 @@ public class ChallengeSaveTo implements Serializable {
 
    public void setTest(List<ChallengeTestTo> test) {
       this.test = test;
+   }
+
+   /**
+    * @return the statusCode
+    */
+   public String getStatusCode() {
+      return statusCode;
+   }
+
+   /**
+    * @param statusCode the statusCode to set
+    */
+   public void setStatusCode(String statusCode) {
+      this.statusCode = statusCode;
    }
 
 }
