@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.ccsw.codewar.configuration.mapper.BeanMapper;
-import com.capgemini.ccsw.codewar.master.model.ParameterTypeEntity;
+import com.capgemini.ccsw.codewar.master.to.ParameterTypeTo;
 import com.capgemini.ccsw.codewar.master.to.TagTo;
 
 @RequestMapping(value = "")
@@ -29,9 +29,9 @@ public class MasterController {
    }
 
    @RequestMapping(path = "/parameter-types", method = RequestMethod.GET)
-   List<ParameterTypeEntity> findAllParameterType() {
+   List<ParameterTypeTo> findAllParameterType() {
 
-      return this.beanMapper.mapList(this.masterService.findAllParameterType(), ParameterTypeEntity.class);
+      return this.beanMapper.mapList(this.masterService.findAllParameterType(), ParameterTypeTo.class);
 
    }
 

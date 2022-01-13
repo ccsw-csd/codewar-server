@@ -1,156 +1,138 @@
 package com.capgemini.ccsw.codewar.user.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class UserDto implements Serializable {
-  /**
+   /**
    *
    */
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  private Long id;
+   private Long id;
 
-  private String username;
+   private String username;
 
-  private String role;
+   private String role;
 
-  private String displayName;
+   private String firstName;
 
-  private String firstName;
+   private String lastName;
 
-  private String lastName;
+   private String mail;
 
-  private String mail;
+   private Date dateCreation;
 
-  private Date dateCreation;
-
-  /**
+   /**
    * @return id
    */
-  public Long getId() {
+   public Long getId() {
 
-    return this.id;
-  }
+      return this.id;
+   }
 
-  /**
+   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(Long id) {
+   public void setId(Long id) {
 
-    this.id = id;
-  }
+      this.id = id;
+   }
 
-  /**
+   /**
    * @return username
    */
-  public String getUsername() {
+   public String getUsername() {
 
-    return this.username;
-  }
+      return this.username;
+   }
 
-  /**
+   /**
    * @param username new value of {@link #getusername}.
    */
-  public void setUsername(String username) {
+   public void setUsername(String username) {
 
-    this.username = username;
-  }
+      this.username = username;
+   }
 
-  /**
+   /**
    * @return role
    */
-  public String getRole() {
+   public String getRole() {
 
-    return this.role;
-  }
+      return this.role;
+   }
 
-  /**
+   /**
    * @param role new value of {@link #getrole}.
    */
-  public void setRole(String role) {
+   public void setRole(String role) {
 
-    this.role = role;
-  }
+      this.role = role;
+   }
 
-  /**
-   * @return displayName
-   */
-  public String getDisplayName() {
-
-    return this.displayName;
-  }
-
-  /**
-   * @param displayName new value of {@link #getdisplayName}.
-   */
-  public void setDisplayName(String displayName) {
-
-    this.displayName = displayName;
-  }
-
-  /**
+   /**
    * @return firstName
    */
-  public String getFirstName() {
+   public String getFirstName() {
 
-    return this.firstName;
-  }
+      return this.firstName;
+   }
 
-  /**
+   /**
    * @param firstName new value of {@link #getfirstName}.
    */
-  public void setFirstName(String firstName) {
+   public void setFirstName(String firstName) {
 
-    this.firstName = firstName;
-  }
+      this.firstName = firstName;
+   }
 
-  /**
+   /**
    * @return lastName
    */
-  public String getLastName() {
+   public String getLastName() {
 
-    return this.lastName;
-  }
+      return this.lastName;
+   }
 
-  /**
+   /**
    * @param lastName new value of {@link #getlastName}.
    */
-  public void setLastName(String lastName) {
+   public void setLastName(String lastName) {
 
-    this.lastName = lastName;
-  }
+      this.lastName = lastName;
+   }
 
-  /**
+   /**
    * @return mail
    */
-  public String getMail() {
+   public String getMail() {
 
-    return this.mail;
-  }
+      return this.mail;
+   }
 
-  /**
+   /**
    * @param mail new value of {@link #getmail}.
    */
-  public void setMail(String mail) {
+   public void setMail(String mail) {
 
-    this.mail = mail;
-  }
+      this.mail = mail;
+   }
 
-  /**
+   /**
    * @return dateCreation
    */
-  public Date getDateCreation() {
+   public Date getDateCreation() {
 
-    return this.dateCreation;
-  }
+      return this.dateCreation;
+   }
 
-  /**
+   /**
    * @param dateCreation new value of {@link #getdateCreation}.
    */
-  public void setDateCreation(Date dateCreation) {
+   public void setDateCreation(Date dateCreation) {
 
-    this.dateCreation = dateCreation;
-  }
+      this.dateCreation = dateCreation;
+   }
 
 }
