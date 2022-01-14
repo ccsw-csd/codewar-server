@@ -8,6 +8,8 @@ public class SystemCommandResultTo {
 
    private String out;
 
+   private String err;
+
    private int exitValue;
 
    private boolean timeout;
@@ -80,6 +82,20 @@ public class SystemCommandResultTo {
    public void setExecutionTime(long executionTime) {
 
       this.executionTime = executionTime;
+   }
+
+   /**
+    * @return the err
+    */
+   public String getErr() {
+      return err;
+   }
+
+   /**
+    * @param err the err to set
+    */
+   public void setErr(String err) {
+      this.err = err;
    }
 
 }

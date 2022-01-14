@@ -76,14 +76,17 @@ public class SystemCommandExecutor {
       String stderr = IOUtils.toString(proc.getErrorStream(), Charset.defaultCharset());
       String stdout = IOUtils.toString(proc.getInputStream(), Charset.defaultCharset());
 
+      if (StringUtils.hasText(stdout) && stdout.endsWith("\r\n")) {
+         stdout = stdout.substring(0, stdout.length() - 2);
+      }
+      if (StringUtils.hasText(stderr) && stderr.endsWith("\r\n")) {
+         stderr = stderr.substring(0, stderr.length() - 2);
+      }
+
       long endTime = System.currentTimeMillis();
       resultTo.setExecutionTime(endTime - initTime);
 
       actualProcess = null;
-
-      if (StringUtils.hasText(stderr)) {
-         throw new IOException(stderr);
-      }
 
       if (!resultTo.isTimeout()) {
          try {
@@ -91,6 +94,7 @@ public class SystemCommandExecutor {
          } catch (InterruptedException e) {
             e.printStackTrace();
          }
+         resultTo.setErr(stderr);
          resultTo.setOut(stdout);
          resultTo.setExitValue(proc.exitValue());
       }

@@ -187,6 +187,8 @@ public class JavaClassUtils {
             "    ${outType} expectedResult = ${expectedResult};\n" + //
             "    ${outType} result = object.${methodName}(${inParams});\n" + //
             "    \n" + //
+            "    printResult(result);\n" + //
+            "    \n" + //
             "    ${commentArrayStringStart}\n" + //
             "    for (int i = 0; i < expectedResult.length; i++) {\n" + //
             "      String expectedData = expectedResult[i];\n" + //
@@ -228,7 +230,7 @@ public class JavaClassUtils {
             "\n" + //
             "  private static long[] convertToArrayLong(String data) {\n" + //
             "    data = data.replace(\"\\\"\", \"\");\n" + //
-            "    String[] arrayData = data.split(\",\");\n" + //
+            "    String[] arrayData = data.split(\";\");\n" + //
             "    long[] arrayLong = new long[arrayData.length];\n" + //
             "    \n" + //
             "    for (int i = 0; i < arrayData.length; i++) {\n" + //
@@ -240,10 +242,37 @@ public class JavaClassUtils {
             "\n" + //
             "  private static String[] convertToArrayString(String data) {\n" + //
             "    data = data.replace(\"\\\"\", \"\");\n" + //
-            "    return data.split(\",\");\n" + //
+            "    return data.split(\";\");\n" + //
             "  }\n" + //
             "  \n" + //
-            "}\n" + //
+            "   private static void printResult(long result) {\n" //
+            + "      System.err.println(result);\n" //
+            + "   }\n" //
+            + "\n" //
+            + "   private static void printResult(String result) {\n" //
+            + "      System.err.println(result);\n" //
+            + "   }\n" //
+            + "\n" //
+            + "   private static void printResult(long[] result) {\n" //
+            + "\n" //
+            + "      for (int i = 0; i < result.length; i++) {\n" //
+            + "         if (i > 0)\n" //
+            + "            System.err.print(\";\");\n" //
+            + "\n" //
+            + "         System.err.print(result[i]);\n" //
+            + "      }\n" //
+            + "   }\n" //
+            + "\n" //
+            + "   private static void printResult(String[] result) {\n" //
+            + "\n" //
+            + "      for (int i = 0; i < result.length; i++) {\n" //
+            + "         if (i > 0)\n" //
+            + "            System.err.print(\";\");\n" //
+            + "\n" //
+            + "         System.err.print(result[i]);\n" //
+            + "      }\n" //
+            + "   }\n" //
+            + "}\n" + //
             "";
    }
 
