@@ -9,7 +9,9 @@ public class TestExecutionResultTo {
 
    private String name;
 
-   private long executionTime;
+   private long executionTimeExpected;
+
+   private long executionTimeActual;
 
    private boolean testFail;
 
@@ -21,12 +23,15 @@ public class TestExecutionResultTo {
 
    private String outParameterActual;
 
-   private String consoleOut;
+   private String consoleOut = null;
+
+   private boolean performance;
 
    public TestExecutionResultTo(ChallengeTestTo test, int timeout) {
       setTestData(test);
 
-      this.executionTime = timeout;
+      this.executionTimeExpected = timeout;
+      this.executionTimeActual = timeout;
       this.testFail = true;
       this.testTimeout = true;
    }
@@ -35,11 +40,23 @@ public class TestExecutionResultTo {
 
       setTestData(test);
 
-      this.executionTime = result.getExecutionTime();
+      this.executionTimeActual = result.getExecutionTime();
+
+      if (test.getTimeout() == null)
+         this.executionTimeExpected = 5000;
+      else
+         this.executionTimeExpected = test.getTimeout().longValue();
+
       this.consoleOut = result.getOut();
       this.outParameterActual = result.getErr();
       this.testFail = result.getExitValue() != 1;
       this.testTimeout = result.isTimeout();
+      this.performance = test.getPerformance();
+
+      if (this.performance) {
+         this.consoleOut = null;
+         this.testTimeout = this.executionTimeActual > this.executionTimeExpected;
+      }
    }
 
    private void setTestData(ChallengeTestTo test) {
@@ -53,13 +70,6 @@ public class TestExecutionResultTo {
     */
    public String getName() {
       return name;
-   }
-
-   /**
-    * @return the executionTime
-    */
-   public long getExecutionTime() {
-      return executionTime;
    }
 
    /**
@@ -102,6 +112,27 @@ public class TestExecutionResultTo {
     */
    public String getConsoleOut() {
       return consoleOut;
+   }
+
+   /**
+    * @return the performance
+    */
+   public Boolean getPerformance() {
+      return performance;
+   }
+
+   /**
+    * @return the executionTimeExpected
+    */
+   public long getExecutionTimeExpected() {
+      return executionTimeExpected;
+   }
+
+   /**
+    * @return the executionTimeActual
+    */
+   public long getExecutionTimeActual() {
+      return executionTimeActual;
    }
 
 }

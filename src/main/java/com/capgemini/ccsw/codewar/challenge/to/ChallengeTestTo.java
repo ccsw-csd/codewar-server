@@ -13,6 +13,8 @@ public class ChallengeTestTo implements Serializable {
 
    private Boolean visible;
 
+   private Boolean performance;
+
    private ChallengeTestValueTo valueOut;
 
    private List<ChallengeTestValueTo> valueIn;
@@ -85,6 +87,20 @@ public class ChallengeTestTo implements Serializable {
     */
    public void setValueIn(List<ChallengeTestValueTo> valueIn) {
       this.valueIn = valueIn;
+   }
+
+   /**
+    * @return the performance
+    */
+   public Boolean getPerformance() {
+      return performance;
+   }
+
+   /**
+    * @param performance the performance to set
+    */
+   public void setPerformance(Boolean performance) {
+      this.performance = performance;
    }
 
 }

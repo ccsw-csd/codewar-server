@@ -84,7 +84,8 @@ public class SystemCommandExecutor {
       }
 
       long endTime = System.currentTimeMillis();
-      resultTo.setExecutionTime(endTime - initTime);
+      long executionTime = endTime - initTime;
+      resultTo.setExecutionTime(executionTime);
 
       actualProcess = null;
 

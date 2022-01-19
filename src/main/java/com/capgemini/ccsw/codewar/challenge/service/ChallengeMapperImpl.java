@@ -51,6 +51,7 @@ public class ChallengeMapperImpl implements ChallengeMapper {
       for (ChallengeTestEntity test : list) {
 
          ChallengeTestTo testTo = this.beanMapper.map(test, ChallengeTestTo.class);
+         testTo.setTimeout(test.getMaxTime());
 
          fillTestValues(testTo, test.getId());
 
