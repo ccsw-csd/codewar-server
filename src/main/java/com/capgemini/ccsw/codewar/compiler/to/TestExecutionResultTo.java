@@ -56,6 +56,10 @@ public class TestExecutionResultTo {
       if (this.performance) {
          this.consoleOut = null;
          this.testTimeout = this.executionTimeActual > this.executionTimeExpected;
+
+         if (this.testTimeout) {
+            this.executionTimeActual = this.executionTimeExpected;
+         }
       }
    }
 

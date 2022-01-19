@@ -45,9 +45,13 @@ public class ChallengeValidatorImpl implements ChallengeValidator {
    public String generateBaseCode(ChallengeSaveTo challenge) {
       String className = challenge.getClassName();
       StringBuilder code = new StringBuilder();
-      code.append("public class ");
-      code.append(className);
-      code.append(" {\n\n");
+
+      code.append("/**\n");
+      code.append(" *\n");
+      code.append(" * Reto: " + challenge.getName() + "\n");
+      code.append(" *\n");
+      code.append(" */\n");
+      code.append("public class " + className + " {\n\n");
 
       String outParam = challenge.getOutParameter().getType();
 
