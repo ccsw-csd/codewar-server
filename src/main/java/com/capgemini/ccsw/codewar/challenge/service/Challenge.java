@@ -2,6 +2,7 @@ package com.capgemini.ccsw.codewar.challenge.service;
 
 import java.util.List;
 
+import com.capgemini.ccsw.codewar.challenge.model.ChallengeEntity;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeActivateResponseTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeItemListTo;
 import com.capgemini.ccsw.codewar.challenge.to.ChallengeMinimalTo;
@@ -76,5 +77,12 @@ public interface Challenge {
     * @param id
     */
    void finalize(Long id);
+
+   /**
+    * Recupera un challenge
+    * @param id
+    * @return
+    */
+   ChallengeEntity getEntity(long id);
 
 }

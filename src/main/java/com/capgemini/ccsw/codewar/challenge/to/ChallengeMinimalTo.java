@@ -10,4 +10,6 @@ public interface ChallengeMinimalTo {
 
    String getBaseCode();
 
+   Boolean getMultipleTries();
+
 }

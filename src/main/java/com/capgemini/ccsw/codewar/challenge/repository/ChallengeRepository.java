@@ -29,7 +29,7 @@ public interface ChallengeRepository extends CrudRepository<ChallengeEntity, Lon
          , nativeQuery = true)
    List<ChallengeItemListTo> findActiveChallenges();
 
-   @Query(value = "select c.id as id, c.name as name, c.description as description, c.base_code as baseCode " //
+   @Query(value = "select c.id as id, c.name as name, c.description as description, c.base_code as baseCode, c.tries as multipleTries " //
          + "from challenge c " //
          + "where c.id = :id", nativeQuery = true)
    ChallengeMinimalTo getChallengeMinimal(Long id);

@@ -34,4 +34,10 @@ public class ParticipationController {
       return this.participationService.executeChallengeParticipation(id, codeIn.getCode());
    }
 
+   @RequestMapping(path = "/challenge/{id}/", method = RequestMethod.POST)
+   public void sendChallengeParticipation(@PathVariable("id") long id, @RequestBody CodeInTo codeIn) {
+
+      this.participationService.sendChallengeParticipation(id, codeIn.getCode());
+   }
+
 }

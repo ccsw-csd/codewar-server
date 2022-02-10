@@ -20,4 +20,12 @@ public interface Participation {
     */
    ChallengeParticipationExecutionTo executeChallengeParticipation(long id, String code);
 
+   /**
+    * Realiza una inscripción del usuario y el código en un reto, el resultado será una participación
+    * @param id
+    * @param code
+    * @return
+    */
+   void sendChallengeParticipation(long id, String code);
+
 }

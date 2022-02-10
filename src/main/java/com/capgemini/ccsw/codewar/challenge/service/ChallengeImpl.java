@@ -76,7 +76,7 @@ public class ChallengeImpl implements Challenge {
    @Override
    public ChallengeSaveTo get(long id) {
 
-      ChallengeEntity challengeEntity = this.challengeRepository.findById(id).orElse(null);
+      ChallengeEntity challengeEntity = getEntity(id);
       if (challengeEntity == null)
          return new ChallengeSaveTo();
 
@@ -178,6 +178,11 @@ public class ChallengeImpl implements Challenge {
       challenge.setEndDate(new Date());
 
       this.challengeRepository.save(challenge);
+   }
+
+   @Override
+   public ChallengeEntity getEntity(long id) {
+      return this.challengeRepository.findById(id).orElse(null);
    }
 
 }
