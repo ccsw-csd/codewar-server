@@ -21,4 +21,10 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         return (List<Challenge>) this.challengeRepository.findChallengeByOrderByStatusIdAscEndDateAscCreatedDateAsc();
     }
+
+    @Override
+    public Challenge findById(Long id) {
+
+        return this.challengeRepository.findById(id).orElse(null);
+    }
 }
