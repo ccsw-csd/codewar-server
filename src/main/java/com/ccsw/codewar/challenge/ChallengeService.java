@@ -8,4 +8,6 @@ public interface ChallengeService {
 
     List<Challenge> findAll();
 
+    Challenge findById(Long id);
+
 }

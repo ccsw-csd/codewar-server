@@ -30,4 +30,11 @@ public class ChallengeController {
         return challenges.stream().map(e -> mapper.map(e, ChallengeDto.class)).collect(Collectors.toList());
     }
 
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public ChallengeDto findById(Long id) {
+
+        Challenge challenge = this.challengeService.findById(id);
+
+        return mapper.map(challenge, ChallengeDto.class);
+    }
 }
