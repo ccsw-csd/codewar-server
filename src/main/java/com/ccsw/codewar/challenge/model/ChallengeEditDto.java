@@ -2,39 +2,28 @@ package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "challenge")
-public class Challenge {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+public class ChallengeEditDto {
     private Long id;
 
-    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
-    @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "tries", nullable = false)
     private Long tries;
 
-    @Column(name = "status_id", nullable = false)
     private Long statusId;
 
-    @Column(name = "description", nullable = false)
     private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() {
         return this.id;
@@ -83,13 +72,4 @@ public class Challenge {
     public void setStatusId(Long statusId) {
         this.statusId = statusId;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 }

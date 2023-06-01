@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.codewar.challenge.model.Challenge;
 import com.ccsw.codewar.challenge.model.ChallengeDto;
+import com.ccsw.codewar.challenge.model.ChallengeEditDto;
 
 @RequestMapping(value = "/challenge")
 @RestController
@@ -32,10 +33,8 @@ public class ChallengeController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public ChallengeDto findById(@PathVariable Long id) {
-
+    public ChallengeEditDto findById(@PathVariable Long id) {
         Challenge challenge = this.challengeService.findById(id);
-
-        return mapper.map(challenge, ChallengeDto.class);
+        return mapper.map(challenge, ChallengeEditDto.class);
     }
 }
