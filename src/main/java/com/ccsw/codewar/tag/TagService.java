@@ -6,5 +6,5 @@ import com.ccsw.codewar.tag.model.TagEntity;
 
 public interface TagService {
 
-    List<TagEntity> getAllTags();
+    List<TagEntity> findAll();
 }

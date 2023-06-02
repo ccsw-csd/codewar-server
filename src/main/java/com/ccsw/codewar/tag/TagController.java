@@ -25,7 +25,7 @@ public class TagController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<TagDto> getAllTags() {
 
-        List<TagEntity> tags = this.tagService.getAllTags();
+        List<TagEntity> tags = this.tagService.findAll();
 
         return tags.stream().map(e -> mapper.map(e, TagDto.class)).collect(Collectors.toList());
     }

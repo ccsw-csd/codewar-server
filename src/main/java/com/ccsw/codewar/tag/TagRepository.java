@@ -8,5 +8,5 @@ import com.ccsw.codewar.tag.model.TagEntity;
 
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
 
-    List<TagEntity> getAllTags();
+    List<TagEntity> findAll();
 }
