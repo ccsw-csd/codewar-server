@@ -1,12 +1,17 @@
 package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
+import java.util.List;
+
+import com.ccsw.codewar.challengeparamenter.model.ChallengeParameterEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,6 +40,9 @@ public class Challenge {
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge")
+    private List<ChallengeParameterEntity> challengeParameter;
 
     public Long getId() {
         return this.id;
@@ -92,4 +100,11 @@ public class Challenge {
         this.description = description;
     }
 
+    public List<ChallengeParameterEntity> getChallengeParameter() {
+        return challengeParameter;
+    }
+
+    public void setChallengeParameter(List<ChallengeParameterEntity> challengeParameter) {
+        this.challengeParameter = challengeParameter;
+    }
 }
