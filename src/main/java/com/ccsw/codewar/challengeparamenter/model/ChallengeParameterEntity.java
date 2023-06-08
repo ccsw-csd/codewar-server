@@ -1,6 +1,7 @@
 package com.ccsw.codewar.challengeparamenter.model;
 
 import com.ccsw.codewar.challenge.model.Challenge;
+import com.ccsw.codewar.parametertype.model.ParameterTypeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,8 +24,9 @@ public class ChallengeParameterEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "parameter_type_id")
-    private Long parameterTypeId;
+    @ManyToOne
+    @JoinColumn(name = "parameter_type_id")
+    private ParameterTypeEntity parameterType;
 
     @Column(name = "order")
     private Long order;
@@ -44,10 +46,6 @@ public class ChallengeParameterEntity {
         return name;
     }
 
-    public Long getParameterTypeId() {
-        return parameterTypeId;
-    }
-
     public Long getOrder() {
         return order;
     }
@@ -64,10 +62,6 @@ public class ChallengeParameterEntity {
         this.name = name;
     }
 
-    public void setParameterTypeId(Long parameterTypeId) {
-        this.parameterTypeId = parameterTypeId;
-    }
-
     public void setOrder(Long order) {
         this.order = order;
     }
@@ -82,5 +76,13 @@ public class ChallengeParameterEntity {
 
     public void setChallenge(Challenge challenge) {
         this.challenge = challenge;
+    }
+
+    public ParameterTypeEntity getParameterType() {
+        return parameterType;
+    }
+
+    public void setParameterType(ParameterTypeEntity parameterType) {
+        this.parameterType = parameterType;
     }
 }
