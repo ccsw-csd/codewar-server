@@ -53,5 +53,4 @@ public class ChallengeParameterDto {
     public void setParameterType(ParameterTypeDto parameterType) {
         this.parameterType = parameterType;
     }
-
 }

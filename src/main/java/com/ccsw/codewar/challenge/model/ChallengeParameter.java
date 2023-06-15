@@ -24,7 +24,7 @@ public class ChallengeParameter {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "parameter_type_id", nullable = false)
+    @JoinColumn(name = "parameter_type_id")
     private ParameterType parameterType;
 
     @Column(name = "order")
