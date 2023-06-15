@@ -1,12 +1,19 @@
 package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
+import java.util.List;
+
+import com.ccsw.codewar.status.model.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,11 +37,15 @@ public class Challenge {
     @Column(name = "tries", nullable = false)
     private Long tries;
 
-    @Column(name = "status_id", nullable = false)
-    private Long statusId;
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge")
+    private List<ChallengeParameter> challengeParameter;
 
     public Long getId() {
         return this.id;
@@ -76,12 +87,18 @@ public class Challenge {
         this.tries = tries;
     }
 
-    public Long getStatusId() {
-        return this.statusId;
+    /**
+     * @return the status
+     */
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getDescription() {
@@ -92,4 +109,11 @@ public class Challenge {
         this.description = description;
     }
 
+    public List<ChallengeParameter> getChallengeParameter() {
+        return challengeParameter;
+    }
+
+    public void setChallengeParameter(List<ChallengeParameter> challengeParameter) {
+        this.challengeParameter = challengeParameter;
+    }
 }

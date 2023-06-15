@@ -1,6 +1,9 @@
 package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
+import java.util.List;
+
+import com.ccsw.codewar.status.model.StatusDto;
 
 public class ChallengeEditDto {
     private Long id;
@@ -13,9 +16,11 @@ public class ChallengeEditDto {
 
     private Long tries;
 
-    private Long statusId;
+    private StatusDto status;
 
     private String description;
+
+    private List<ChallengeParameterDto> challengeParameter;
 
     public String getDescription() {
         return description;
@@ -65,11 +70,25 @@ public class ChallengeEditDto {
         this.tries = tries;
     }
 
-    public Long getStatusId() {
-        return this.statusId;
+    public List<ChallengeParameterDto> getChallengeParameter() {
+        return challengeParameter;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setChallengeParameter(List<ChallengeParameterDto> challengeParameter) {
+        this.challengeParameter = challengeParameter;
+    }
+
+    /**
+     * @return the status
+     */
+    public StatusDto getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(StatusDto status) {
+        this.status = status;
     }
 }

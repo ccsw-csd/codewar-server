@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.codewar.tag.model.TagDto;
-import com.ccsw.codewar.tag.model.TagEntity;
+import com.ccsw.codewar.tag.model.Tag;
 
 @RequestMapping(value = "/tag")
 @RestController
@@ -25,7 +25,7 @@ public class TagController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<TagDto> getAllTags() {
 
-        List<TagEntity> tags = this.tagService.findAll();
+        List<Tag> tags = this.tagService.findAll();
 
         return tags.stream().map(e -> mapper.map(e, TagDto.class)).collect(Collectors.toList());
     }

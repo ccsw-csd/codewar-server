@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.codewar.challenge.model.Challenge;
-import com.ccsw.codewar.challenge.model.ChallengeDto;
+import com.ccsw.codewar.challenge.model.ChallengeItemListDto;
 import com.ccsw.codewar.challenge.model.ChallengeEditDto;
 
 @RequestMapping(value = "/challenge")
@@ -25,11 +25,11 @@ public class ChallengeController {
     DozerBeanMapper mapper;
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<ChallengeDto> findAll() {
+    public List<ChallengeItemListDto> findAll() {
 
         List<Challenge> challenges = this.challengeService.findAll();
 
-        return challenges.stream().map(e -> mapper.map(e, ChallengeDto.class)).collect(Collectors.toList());
+        return challenges.stream().map(e -> mapper.map(e, ChallengeItemListDto.class)).collect(Collectors.toList());
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
