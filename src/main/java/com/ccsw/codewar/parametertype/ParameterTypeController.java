@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.codewar.parametertype.model.ParameterTypeDto;
-import com.ccsw.codewar.parametertype.model.ParameterTypeEntity;
+import com.ccsw.codewar.parametertype.model.ParameterType;
 
 @RequestMapping(value = "/parameter_type")
 @RestController
@@ -25,7 +25,7 @@ public class ParameterTypeController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<ParameterTypeDto> findAll() {
 
-        List<ParameterTypeEntity> parameter = this.parameterTypeService.findAll();
+        List<ParameterType> parameter = this.parameterTypeService.findAll();
 
         return parameter.stream().map(e -> mapper.map(e, ParameterTypeDto.class)).collect(Collectors.toList());
     }

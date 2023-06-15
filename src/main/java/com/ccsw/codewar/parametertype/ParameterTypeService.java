@@ -2,9 +2,9 @@ package com.ccsw.codewar.parametertype;
 
 import java.util.List;
 
-import com.ccsw.codewar.parametertype.model.ParameterTypeEntity;
+import com.ccsw.codewar.parametertype.model.ParameterType;
 
 public interface ParameterTypeService {
 
-    List<ParameterTypeEntity> findAll();
+    List<ParameterType> findAll();
 }

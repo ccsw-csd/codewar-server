@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ccsw.codewar.tag.model.TagEntity;
+import com.ccsw.codewar.tag.model.Tag;
 
-public interface TagRepository extends JpaRepository<TagEntity, Long> {
+public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    List<TagEntity> findAll();
+    List<Tag> findAll();
 }

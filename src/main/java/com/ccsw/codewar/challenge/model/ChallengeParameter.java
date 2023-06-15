@@ -1,6 +1,6 @@
-package com.ccsw.codewar.challengeparamenter.model;
+package com.ccsw.codewar.challenge.model;
 
-import com.ccsw.codewar.challenge.model.Challenge;
+import com.ccsw.codewar.parametertype.model.ParameterType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "challenge_parameter")
-public class ChallengeParameterEntity {
+public class ChallengeParameter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,9 @@ public class ChallengeParameterEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "parameter_type_id")
-    private Long parameterTypeId;
+    @ManyToOne
+    @JoinColumn(name = "parameter_type_id", nullable = false)
+    private ParameterType parameterType;
 
     @Column(name = "order")
     private Long order;
@@ -44,10 +45,6 @@ public class ChallengeParameterEntity {
         return name;
     }
 
-    public Long getParameterTypeId() {
-        return parameterTypeId;
-    }
-
     public Long getOrder() {
         return order;
     }
@@ -62,10 +59,6 @@ public class ChallengeParameterEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setParameterTypeId(Long parameterTypeId) {
-        this.parameterTypeId = parameterTypeId;
     }
 
     public void setOrder(Long order) {
@@ -83,4 +76,19 @@ public class ChallengeParameterEntity {
     public void setChallenge(Challenge challenge) {
         this.challenge = challenge;
     }
+
+    /**
+     * @return the parameterType
+     */
+    public ParameterType getParameterType() {
+        return parameterType;
+    }
+
+    /**
+     * @param parameterType the parameterType to set
+     */
+    public void setParameterType(ParameterType parameterType) {
+        this.parameterType = parameterType;
+    }
+
 }

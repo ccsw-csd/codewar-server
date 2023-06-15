@@ -2,7 +2,9 @@ package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
 
-public class ChallengeDto {
+import com.ccsw.codewar.status.model.StatusDto;
+
+public class ChallengeItemListDto {
 
     private Long id;
 
@@ -14,7 +16,7 @@ public class ChallengeDto {
 
     private Long tries;
 
-    private Long statusId;
+    private StatusDto status;
 
     public Long getId() {
         return this.id;
@@ -56,12 +58,18 @@ public class ChallengeDto {
         this.tries = tries;
     }
 
-    public Long getStatusId() {
-        return this.statusId;
+    /**
+     * @return the status
+     */
+    public StatusDto getStatus() {
+        return status;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(StatusDto status) {
+        this.status = status;
     }
 
 }

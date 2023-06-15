@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.codewar.tag.model.TagEntity;
+import com.ccsw.codewar.tag.model.Tag;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -14,7 +14,7 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     @Override
-    public List<TagEntity> findAll() {
+    public List<Tag> findAll() {
         return tagRepository.findAll();
     }
 }

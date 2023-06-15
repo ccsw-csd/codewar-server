@@ -1,4 +1,6 @@
-package com.ccsw.codewar.challengeparamenter.model;
+package com.ccsw.codewar.challenge.model;
+
+import com.ccsw.codewar.parametertype.model.ParameterTypeDto;
 
 public class ChallengeParameterDto {
 
@@ -6,7 +8,7 @@ public class ChallengeParameterDto {
 
     private String name;
 
-    private Long parameterTypeId;
+    private ParameterTypeDto parameterType;
 
     private Long order;
 
@@ -18,10 +20,6 @@ public class ChallengeParameterDto {
 
     public String getName() {
         return name;
-    }
-
-    public Long getParameterTypeId() {
-        return parameterTypeId;
     }
 
     public Long getOrder() {
@@ -40,10 +38,6 @@ public class ChallengeParameterDto {
         this.name = name;
     }
 
-    public void setParameterTypeId(Long parameterTypeId) {
-        this.parameterTypeId = parameterTypeId;
-    }
-
     public void setOrder(Long order) {
         this.order = order;
     }
@@ -51,4 +45,13 @@ public class ChallengeParameterDto {
     public void setIsInput(Boolean isInput) {
         this.isInput = isInput;
     }
+
+    public ParameterTypeDto getParameterType() {
+        return parameterType;
+    }
+
+    public void setParameterType(ParameterTypeDto parameterType) {
+        this.parameterType = parameterType;
+    }
+
 }
