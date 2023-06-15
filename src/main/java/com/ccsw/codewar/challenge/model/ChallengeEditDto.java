@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ccsw.codewar.status.model.StatusDto;
+import com.ccsw.codewar.tag.model.TagDto;
 
 public class ChallengeEditDto {
     private Long id;
@@ -20,7 +21,9 @@ public class ChallengeEditDto {
 
     private String description;
 
-    private List<ChallengeParameterDto> challengeParameter;
+    private List<ChallengeParameterDto> challengeParameters;
+
+    private List<TagDto> tags;
 
     public String getDescription() {
         return description;
@@ -70,14 +73,6 @@ public class ChallengeEditDto {
         this.tries = tries;
     }
 
-    public List<ChallengeParameterDto> getChallengeParameter() {
-        return challengeParameter;
-    }
-
-    public void setChallengeParameter(List<ChallengeParameterDto> challengeParameter) {
-        this.challengeParameter = challengeParameter;
-    }
-
     /**
      * @return the status
      */
@@ -90,5 +85,33 @@ public class ChallengeEditDto {
      */
     public void setStatus(StatusDto status) {
         this.status = status;
+    }
+
+    /**
+     * @return the challengeParameters
+     */
+    public List<ChallengeParameterDto> getChallengeParameters() {
+        return challengeParameters;
+    }
+
+    /**
+     * @param challengeParameters the challengeParameters to set
+     */
+    public void setChallengeParameters(List<ChallengeParameterDto> challengeParameters) {
+        this.challengeParameters = challengeParameters;
+    }
+
+    /**
+     * @return the tags
+     */
+    public List<TagDto> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tags the tags to set
+     */
+    public void setTags(List<TagDto> tags) {
+        this.tags = tags;
     }
 }

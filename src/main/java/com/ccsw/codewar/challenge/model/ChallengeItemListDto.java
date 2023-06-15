@@ -1,8 +1,10 @@
 package com.ccsw.codewar.challenge.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.ccsw.codewar.status.model.StatusDto;
+import com.ccsw.codewar.tag.model.TagDto;
 
 public class ChallengeItemListDto {
 
@@ -17,6 +19,8 @@ public class ChallengeItemListDto {
     private Long tries;
 
     private StatusDto status;
+
+    private List<TagDto> tags;
 
     public Long getId() {
         return this.id;
@@ -70,6 +74,20 @@ public class ChallengeItemListDto {
      */
     public void setStatus(StatusDto status) {
         this.status = status;
+    }
+
+    /**
+     * @return the tags
+     */
+    public List<TagDto> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tags the tags to set
+     */
+    public void setTags(List<TagDto> tags) {
+        this.tags = tags;
     }
 
 }

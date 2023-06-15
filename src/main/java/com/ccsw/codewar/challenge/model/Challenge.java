@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.ccsw.codewar.status.model.Status;
+import com.ccsw.codewar.tag.model.Tag;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -45,7 +48,13 @@ public class Challenge {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge")
-    private List<ChallengeParameter> challengeParameter;
+    private List<ChallengeParameter> challengeParameters;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "challenge_tag", //
+            joinColumns = { @JoinColumn(name = "challenge_id", referencedColumnName = "id") }, //
+            inverseJoinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id") })
+    private List<Tag> tags;
 
     public Long getId() {
         return this.id;
@@ -109,11 +118,32 @@ public class Challenge {
         this.description = description;
     }
 
-    public List<ChallengeParameter> getChallengeParameter() {
-        return challengeParameter;
+    /**
+     * @return the challengeParameters
+     */
+    public List<ChallengeParameter> getChallengeParameters() {
+        return challengeParameters;
     }
 
-    public void setChallengeParameter(List<ChallengeParameter> challengeParameter) {
-        this.challengeParameter = challengeParameter;
+    /**
+     * @param challengeParameters the challengeParameters to set
+     */
+    public void setChallengeParameters(List<ChallengeParameter> challengeParameters) {
+        this.challengeParameters = challengeParameters;
     }
+
+    /**
+     * @return the tags
+     */
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tags the tags to set
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
 }
