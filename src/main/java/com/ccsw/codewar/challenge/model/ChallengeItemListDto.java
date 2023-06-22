@@ -3,6 +3,7 @@ package com.ccsw.codewar.challenge.model;
 import java.util.Date;
 import java.util.List;
 
+import com.ccsw.codewar.person.model.PersonDto;
 import com.ccsw.codewar.status.model.StatusDto;
 import com.ccsw.codewar.tag.model.TagDto;
 
@@ -19,6 +20,10 @@ public class ChallengeItemListDto {
     private Long tries;
 
     private StatusDto status;
+
+    private PersonDto person;
+
+    private Long distinctUsername;
 
     private List<TagDto> tags;
 
@@ -88,6 +93,22 @@ public class ChallengeItemListDto {
      */
     public void setTags(List<TagDto> tags) {
         this.tags = tags;
+    }
+
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
+    }
+
+    public Long getDistinctUsername() {
+        return this.distinctUsername;
+    }
+
+    public void setDistinctUsername(Long distinctUsername) {
+        this.distinctUsername = distinctUsername;
     }
 
 }
