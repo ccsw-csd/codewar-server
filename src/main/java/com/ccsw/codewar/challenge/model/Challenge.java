@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.annotations.Formula;
 
-import com.ccsw.codewar.participation.model.Participation;
 import com.ccsw.codewar.person.model.Person;
 import com.ccsw.codewar.status.model.Status;
 import com.ccsw.codewar.tag.model.Tag;
@@ -13,7 +12,6 @@ import com.ccsw.codewar.tag.model.Tag;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +22,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@EntityListeners({ Participation.class })
 @Entity
 @Table(name = "challenge")
 public class Challenge {
@@ -58,7 +55,7 @@ public class Challenge {
     private Person person;
 
     @Formula("(SELECT COUNT(DISTINCT p.username) FROM participation p WHERE p.challenge_id = id)")
-    private Long distinctUsername;
+    private Long participationCount;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge")
     private List<ChallengeParameter> challengeParameters;
@@ -167,11 +164,11 @@ public class Challenge {
         this.tags = tags;
     }
 
-    public Long getDistinctUsername() {
-        return this.distinctUsername;
+    public Long getParticipationCount() {
+        return this.participationCount;
     }
 
-    public void setDistinctUsername(Long distinctUsername) {
-        this.distinctUsername = distinctUsername;
+    public void setParticipationCount(Long participationCount) {
+        this.participationCount = participationCount;
     }
 }

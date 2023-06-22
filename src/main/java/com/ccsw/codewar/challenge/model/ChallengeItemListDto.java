@@ -23,7 +23,7 @@ public class ChallengeItemListDto {
 
     private PersonDto person;
 
-    private Long distinctUsername;
+    private Long participationCount;
 
     private List<TagDto> tags;
 
@@ -103,12 +103,12 @@ public class ChallengeItemListDto {
         this.person = person;
     }
 
-    public Long getDistinctUsername() {
-        return this.distinctUsername;
+    public Long getParticipationCount() {
+        return this.participationCount;
     }
 
-    public void setDistinctUsername(Long distinctUsername) {
-        this.distinctUsername = distinctUsername;
+    public void setParticipationCount(Long participationCount) {
+        this.participationCount = participationCount;
     }
 
 }
