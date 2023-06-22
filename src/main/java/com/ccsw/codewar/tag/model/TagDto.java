@@ -6,6 +6,8 @@ public class TagDto {
 
     private String code;
 
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -30,5 +32,4 @@ public class TagDto {
         this.name = name;
     }
 
-    private String name;
 }

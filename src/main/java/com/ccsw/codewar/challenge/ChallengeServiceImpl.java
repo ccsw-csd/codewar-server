@@ -18,7 +18,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public List<Challenge> findAll() {
-
         return (List<Challenge>) this.challengeRepository.findChallengeByOrderByStatusIdAscEndDateAscCreatedDateAsc();
     }
 

@@ -3,6 +3,9 @@ package com.ccsw.codewar.challenge.model;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Formula;
+
+import com.ccsw.codewar.person.model.Person;
 import com.ccsw.codewar.status.model.Status;
 import com.ccsw.codewar.tag.model.Tag;
 
@@ -46,6 +49,13 @@ public class Challenge {
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private Person person;
+
+    @Formula("(SELECT COUNT(DISTINCT p.username) FROM participation p WHERE p.challenge_id = id)")
+    private Long participationCount;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge")
     private List<ChallengeParameter> challengeParameters;
@@ -118,6 +128,14 @@ public class Challenge {
         this.description = description;
     }
 
+    public Person getPerson() {
+        return this.person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     /**
      * @return the challengeParameters
      */
@@ -146,4 +164,11 @@ public class Challenge {
         this.tags = tags;
     }
 
+    public Long getParticipationCount() {
+        return this.participationCount;
+    }
+
+    public void setParticipationCount(Long participationCount) {
+        this.participationCount = participationCount;
+    }
 }
