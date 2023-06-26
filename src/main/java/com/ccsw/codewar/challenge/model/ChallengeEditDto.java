@@ -11,6 +11,10 @@ public class ChallengeEditDto {
 
     private String name;
 
+    private String className;
+
+    private String functionName;
+
     private Date createdDate;
 
     private Date endDate;
@@ -113,5 +117,33 @@ public class ChallengeEditDto {
      */
     public void setTags(List<TagDto> tags) {
         this.tags = tags;
+    }
+
+    /**
+     * @return the functionName
+     */
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    /**
+     * @param functionName the functionName to set
+     */
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
+    /**
+     * @return the className
+     */
+    public String getClassName() {
+        return className;
+    }
+
+    /**
+     * @param className the className to set
+     */
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

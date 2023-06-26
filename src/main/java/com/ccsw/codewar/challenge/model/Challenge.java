@@ -34,6 +34,12 @@ public class Challenge {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "class_name", nullable = false)
+    private String className;
+
+    @Column(name = "function_name", nullable = false)
+    private String functionName;
+
     @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
@@ -171,4 +177,33 @@ public class Challenge {
     public void setParticipationCount(Long participationCount) {
         this.participationCount = participationCount;
     }
+
+    /**
+     * @return the className
+     */
+    public String getClassName() {
+        return className;
+    }
+
+    /**
+     * @param className the className to set
+     */
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    /**
+     * @return the functionName
+     */
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    /**
+     * @param functionName the functionName to set
+     */
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
 }
